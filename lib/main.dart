@@ -7,12 +7,6 @@ import 'package:flutter/material.dart';
 
 void main() {
   runApp(MaterialApp(
-    routes: {
-      '/': (context) => HomePage(),
-      '/loading': (context) => LoadingPage(),
-      '/create': (context) => CreatePage(),
-      '/cards': (context) => CardsPage(),
-      '/learn': (context) => LearnPage()
-    },
+    home: HomePage(),
   ));
 }
