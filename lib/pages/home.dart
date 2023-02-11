@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -16,8 +16,16 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       backgroundColor: theme.onPrimary,
       bottomNavigationBar: const HomeNavigationBar(),
-      body: Column(
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(30),
+          child: Column(
+            children: [
+              Text('Click on a plus sign at the bottom to create your first flash card collection.', style: TextStyle(color: theme.secondary)),
 
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -41,7 +49,7 @@ class HomeNavigationBar extends StatelessWidget {
 
               }),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 0.0, vertical: 8.0),
+            padding: const EdgeInsets.symmetric(horizontal: 0.0, vertical: 12.0),
             child: VerticalDivider(width: 2.0, color: theme.secondary, thickness: 2.0),
           ),
           IconButton(icon: const Icon(Icons.add_circle), iconSize: 48,
@@ -49,7 +57,7 @@ class HomeNavigationBar extends StatelessWidget {
 
               }),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 0.0, vertical: 8.0),
+            padding: const EdgeInsets.symmetric(horizontal: 0.0, vertical: 12.0),
             child: VerticalDivider(width: 2.0, color: theme.secondary, thickness: 2.0),
           ),
           IconButton(icon: const Icon(Icons.settings), iconSize: 48,
