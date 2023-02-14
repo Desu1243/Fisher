@@ -1,3 +1,7 @@
+import 'package:fisher/models/FlashCard.dart';
+import 'package:fisher/models/FlashCardCollection.dart';
+import 'package:fisher/pages/home.dart';
+import 'package:fisher/services/Collections.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
@@ -9,6 +13,19 @@ class LoadingPage extends StatefulWidget {
 }
 
 class _LoadingPageState extends State<LoadingPage> {
+
+  //get collection from database
+  void setupFlashCardsCollections() async {
+    Collections collections = Collections();
+    await collections.getData();
+    Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage(flashCardCollection: collections.collectionList)));
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    setupFlashCardsCollections();
+  }
   @override
   Widget build(BuildContext context) {
     ColorScheme theme = Theme.of(context).colorScheme;

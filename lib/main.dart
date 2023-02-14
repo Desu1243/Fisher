@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 
 void main() {
   runApp(MaterialApp(
-    home: HomePage(),
+    home: LoadingPage(),
     theme: ThemeData(
       colorScheme: const ColorScheme(
         brightness: Brightness.light,
@@ -18,10 +18,10 @@ void main() {
         error: Color.fromRGBO(249, 99, 99, 1.0), //E06363 //red
         onPrimary: Color.fromRGBO(16, 114, 100, 1.0), //107264 //teal green
 
-        onSecondary: Color.fromRGBO(8, 49, 59, 1.0),
-        onBackground: Color.fromRGBO(8, 49, 59, 1.0),
-        onSurface: Color.fromRGBO(8, 49, 59, 1.0),
-        onError: Color.fromRGBO(8, 49, 59, 1.0),
+        onSecondary: Color.fromRGBO(8, 49, 59, 0.0),
+        onBackground: Color.fromRGBO(8, 49, 59, 0.0),
+        onSurface: Color.fromRGBO(8, 49, 59, 0.0),
+        onError: Color.fromRGBO(8, 49, 59, 0.0),
       ),
       brightness: Brightness.light,
     ),

@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 
+import '../models/FlashCardCollection.dart';
+import 'create.dart';
+
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  final List<FlashCardCollection> flashCardCollection;
+  const HomePage({super.key, required this.flashCardCollection});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -13,6 +17,9 @@ class _HomePageState extends State<HomePage> {
 
     ColorScheme theme = Theme.of(context).colorScheme;
 
+    var data = widget.flashCardCollection;
+    print(data.length);
+
     return Scaffold(
       backgroundColor: theme.onPrimary,
       bottomNavigationBar: const HomeNavigationBar(),
@@ -21,8 +28,8 @@ class _HomePageState extends State<HomePage> {
           padding: const EdgeInsets.all(30),
           child: Column(
             children: [
-              Text('Click on a plus sign at the bottom to create your first flash card collection.', style: TextStyle(color: theme.secondary)),
-
+              Text('Click on a plus sign at the bottom to create your first flash card collection.',
+                style: TextStyle(color: theme.secondary, fontSize: 24), textAlign: TextAlign.center,),
             ],
           ),
         ),
@@ -54,7 +61,7 @@ class HomeNavigationBar extends StatelessWidget {
           ),
           IconButton(icon: const Icon(Icons.add_circle), iconSize: 48,
               color: theme.secondary, onPressed: (){
-
+                Navigator.push(context, MaterialPageRoute(builder: (context) => CreatePage()));
               }),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 0.0, vertical: 12.0),
