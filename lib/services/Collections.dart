@@ -14,7 +14,32 @@ class Collections{
         FlashCardCollection(title: 'Homework', collection: [
           FlashCard(term: 'nuclear warhead', definition: 'funny thing that is in ma basement'),
           FlashCard(term: 'apocalypse', definition: "future"),
-        ],)
+        ]),
+        FlashCardCollection(title: 'Placeholder', collection: [
+          FlashCard(term: 'Placeholder', definition: 'text'),
+          FlashCard(term: 'Placeholder', definition: "text"),
+        ]),
+        FlashCardCollection(title: 'Placeholder', collection: [
+          FlashCard(term: 'Placeholder', definition: 'text'),
+          FlashCard(term: 'Placeholder', definition: "text"),
+        ]),
+        FlashCardCollection(title: 'Placeholder', collection: [
+          FlashCard(term: 'Placeholder', definition: 'text'),
+          FlashCard(term: 'Placeholder', definition: "text"),
+        ]),
+        FlashCardCollection(title: 'Placeholder', collection: [
+          FlashCard(term: 'Placeholder', definition: 'text'),
+          FlashCard(term: 'Placeholder', definition: "text"),
+        ]),
+        FlashCardCollection(title: 'Placeholder', collection: [
+          FlashCard(term: 'Placeholder', definition: 'text'),
+          FlashCard(term: 'Placeholder', definition: "text"),
+        ]),
+        FlashCardCollection(title: 'Placeholder', collection: [
+          FlashCard(term: 'Placeholder', definition: 'text'),
+          FlashCard(term: 'Placeholder', definition: "text"),
+        ]),
+
       ];
     });
   }

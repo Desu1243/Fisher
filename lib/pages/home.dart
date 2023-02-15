@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../models/FlashCardCollection.dart';
+import 'cards.dart';
 import 'create.dart';
 
 class HomePage extends StatefulWidget {
@@ -14,24 +15,40 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-
     ColorScheme theme = Theme.of(context).colorScheme;
+    var collections = widget.flashCardCollection;
 
-    var data = widget.flashCardCollection;
-    print(data.length);
 
     return Scaffold(
       backgroundColor: theme.onPrimary,
       bottomNavigationBar: const HomeNavigationBar(),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(30),
-          child: Column(
-            children: [
-              Text('Click on a plus sign at the bottom to create your first flash card collection.',
-                style: TextStyle(color: theme.secondary, fontSize: 24), textAlign: TextAlign.center,),
-            ],
-          ),
+          padding: const EdgeInsets.fromLTRB(30, 30, 30, 0),
+          child:
+              /*Text('Click on a plus sign at the bottom to create your first flash card collection.',
+                style: TextStyle(color: theme.secondary, fontSize: 24), textAlign: TextAlign.center,),*/
+          ListView.builder(
+            itemCount: collections.length,
+            scrollDirection: Axis.vertical,
+            shrinkWrap: true,
+            itemBuilder: (context, index) => GestureDetector(
+              onTap: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => CardsPage(collection: collections[index]),));
+              },
+              child: Card(
+                color: theme.secondary,
+                shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(15))),
+                margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+                child: SizedBox(
+                  height: 150,
+                  child: Center(
+                      child: Text(collections[index].title, style: TextStyle(fontSize: 18, color: theme.primary),)
+                  ),
+                ),
+              ),
+            ),
+          )
         ),
       ),
     );
