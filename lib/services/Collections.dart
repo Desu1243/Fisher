@@ -7,6 +7,7 @@ class Collections{
   Future<void> getData() async {
     await Future.delayed(Duration(seconds: 3),(){
       this.collectionList = [
+
         FlashCardCollection(title: 'Programming', collection: [
           FlashCard(term: 'programming', definition: 'making electrons do math'),
           FlashCard(term: 'react native', definition: "something I don't use"),
