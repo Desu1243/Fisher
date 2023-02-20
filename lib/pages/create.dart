@@ -11,6 +11,7 @@ class CreatePage extends StatefulWidget {
 
 class _CreatePageState extends State<CreatePage> {
 
+  TextEditingController titleController = TextEditingController();
 
   void addFormField(){
 
@@ -47,10 +48,22 @@ class _CreatePageState extends State<CreatePage> {
       body: SafeArea(
         child: Column(
           children: [
+            /*Container(
+              child: TextFormField(
+                controller: titleController,
+                autofocus: true,
+                cursorColor: theme.secondary,
+                style: TextStyle(color: theme.secondary),
+                decoration: InputDecoration(
+                  focusColor: theme.secondary,
+                  hintText: "Title",
+                  hintStyle: TextStyle(color: theme.secondary),
 
+                ),
+              )
+            ),*/
             Container(
-              color: theme.primary,
-
+              color: theme.primary
             )
           ],
         ),
