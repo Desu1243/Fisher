@@ -62,7 +62,7 @@ class ScrollableCollections extends StatelessWidget {
             child: SizedBox(
               height: 150,
               child: Center(
-                  child: Text(collections[index].title, style: TextStyle(fontSize: 18, color: theme.primary),)
+                  child: Text(collections[index].title, style: TextStyle(fontSize: 18, color: theme.primary, fontWeight: FontWeight.bold),)
               ),
             ),
           ),
