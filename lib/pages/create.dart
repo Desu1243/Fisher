@@ -61,7 +61,9 @@ class _CreatePageState extends State<CreatePage> {
                 ),
               )
             ),
-            Container(color: theme.primary)
+            Container(
+              color: theme.primary,
+            )
           ],
         ),
       ),

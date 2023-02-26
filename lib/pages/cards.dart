@@ -17,66 +17,108 @@ class _CardsPageState extends State<CardsPage> {
     var showData = data.collection;
 
     return Scaffold(
+      backgroundColor: theme.error,
       appBar: AppBar(
         foregroundColor: theme.secondary,
         backgroundColor: theme.background,
         elevation: 0,
         title: Text(data.title),
         actions: [
-          IconButton(onPressed: (){}, icon: Icon(Icons.more_horiz_rounded))
+          IconButton(onPressed: () {}, icon: const Icon(Icons.more_horiz_rounded))
         ],
       ),
       body: Column(
         children: [
           Container(
             color: theme.primary,
-            height: 200,
+            height: 180,
             child: ListView.builder(
               itemCount: data.collection.length,
               scrollDirection: Axis.horizontal,
               shrinkWrap: true,
               itemBuilder: (context, index) => GestureDetector(
                 child: Container(
-                  margin: EdgeInsets.all(15),
+                  margin: const EdgeInsets.all(15),
                   child: Card(
                     color: theme.secondary,
-                    shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(15))),
-                    margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+                    shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(15))),
                     child: SizedBox(
                       height: 150,
                       width: 300,
                       child: Center(
-                          child: Text(showData[index].term, style: TextStyle(fontSize: 18, color: theme.primary, fontWeight: FontWeight.bold),)
-                      ),
+                          child: Text(
+                        showData[index].term,
+                        style: TextStyle(
+                            fontSize: 18,
+                            color: theme.primary,
+                            fontWeight: FontWeight.bold),
+                      )),
                     ),
                   ),
                 ),
-                onTap: (){
-                    setState((){
-                      var temp = showData[index].term;
-                      showData[index].term = showData[index].definition;
-                      showData[index].definition = temp;
-                    });
+                onTap: () {
+                  setState(() {
+                    var temp = showData[index].term;
+                    showData[index].term = showData[index].definition;
+                    showData[index].definition = temp;
+                  });
                 },
               ),
             ),
           ),
-        Container(
-          color: theme.background,
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: [
-                Text(data.title, style: TextStyle(color: theme.secondary, fontWeight: FontWeight.bold, fontSize: 18),),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
-                  child: VerticalDivider(width: 2.0, color: theme.secondary, thickness: 2.0),
-                ),
-                Text("${data.collection.length} terms", style: TextStyle(color: theme.secondary)),
-              ],
+          Container(
+            color: theme.background,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                children: [
+                  Text(
+                    data.title,
+                    style: TextStyle(
+                        color: theme.secondary,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                        letterSpacing: 0.5
+                     ),
+                  ),
+                  Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+                    child: VerticalDivider(
+                        width: 2.0, color: theme.onPrimary, thickness: 2.0),
+                  ),
+                  Text("${data.collection.length} terms",
+                      style: TextStyle(color: theme.secondary)),
+                ],
+              ),
             ),
           ),
-        )
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+            child: Column(
+              children: [
+                ElevatedButton(
+                    onPressed: () => {},
+                    style: ButtonStyle(
+                        shape: MaterialStatePropertyAll(RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10)))),
+                    child: Row(children: [
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(10, 20, 20, 20),
+                        child: Icon(
+                          Icons.menu_book,
+                          color: theme.surface,
+                        ),
+                      ),
+                      Text(
+                        "Learn using flash cards",
+                        style: TextStyle(color: theme.secondary, fontSize: 18),
+                      )
+                    ]))
+              ],
+            ),
+          )
         ],
       ),
     );

@@ -13,7 +13,7 @@ class Collections{
           FlashCard(term: 'react native', definition: "something I don't use"),
         ]),
         FlashCardCollection(title: 'Homework', collection: [
-          FlashCard(term: 'nuclear warhead', definition: 'funny thing that is in ma basement'),
+          FlashCard(term: 'nuclear warhead', definition: 'funny thing that is in my basement'),
           FlashCard(term: 'apocalypse', definition: "future"),
         ]),
 
