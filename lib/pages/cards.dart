@@ -15,7 +15,8 @@ class _CardsPageState extends State<CardsPage> {
   Widget build(BuildContext context) {
     FlashCardCollection data = widget.collection;
     ColorScheme theme = Theme.of(context).colorScheme;
-    List<FlashCard> showData = data.collection.map((item)=>item).toList();
+    List<FlashCard> showData = List.of(data.collection);
+
 
     return Scaffold(
       backgroundColor: theme.background,
@@ -50,7 +51,7 @@ class _CardsPageState extends State<CardsPage> {
                       width: 300,
                       child: Center(
                           child: Text(
-                        showData[index].term,
+                            showData[index].toggle ? showData[index].term : showData[index].definition,
                         style: TextStyle(
                             fontSize: 18,
                             color: theme.primary,
@@ -61,9 +62,7 @@ class _CardsPageState extends State<CardsPage> {
                 ),
                 onTap: () {
                   setState(() {
-                    var temp = showData[index].term;
-                    showData[index].term = showData[index].definition;
-                    showData[index].definition = temp;
+                    showData[index].toggle = !showData[index].toggle;
                   });
                 },
               ),
