@@ -24,7 +24,7 @@ class _HomePageState extends State<HomePage> {
       bottomNavigationBar: const HomeNavigationBar(),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(30, 30, 30, 0),
+          padding: const EdgeInsets.fromLTRB(30, 15, 30, 0),
           child: ScrollableCollections(listOfCollections: collections,)
         ),
       ),

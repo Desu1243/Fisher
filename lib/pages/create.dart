@@ -11,21 +11,19 @@ class CreatePage extends StatefulWidget {
 
 class _CreatePageState extends State<CreatePage> {
 
-
-  void addFormField(){
-
+  var listOfFields = <Widget>[];
+  TextEditingController fieldController = TextEditingController();
+  void addNewField(){
+    setState((){
+      listOfFields.add(TextFormField(controller: fieldController));
+    });
   }
-
-  void sendForm(){
-
-  }
-
   @override
   Widget build(BuildContext context) {
     ColorScheme theme = Theme.of(context).colorScheme;
-    var collectionListView = ListView(
-      padding: const EdgeInsets.all(10),
-    );
+
+    final formKey = GlobalKey<FormState>();
+
 
     return Scaffold(
       backgroundColor: theme.background,
@@ -34,25 +32,30 @@ class _CreatePageState extends State<CreatePage> {
         title: const Text('Create flash card collection'),
         elevation: 0,
         actions: [
-          IconButton(onPressed: (){}, icon: Icon(Icons.done_rounded))
+          IconButton(onPressed: (){
+
+          }, icon: const Icon(Icons.done_rounded))
         ],
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: theme.surface,
+        onPressed: ()=>addNewField(),
         child: Icon(Icons.add, size: 50, color: theme.background),
-        onPressed: () => {
-
-        },
       ),
       body: SafeArea(
-        child: Column(
-          children: [
-
-            Container(
-              color: theme.primary,
-
-            )
-          ],
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Form(
+              key : formKey,
+              child :Scaffold(
+                  body : ListView.builder(
+                      itemCount: listOfFields.length,
+                      itemBuilder: (context, index){
+                        return listOfFields[index];
+                      }
+                  ),
+              ),
+          ),
         ),
       ),
     );
