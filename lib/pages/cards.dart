@@ -1,3 +1,4 @@
+import 'package:fisher/models/FlashCard.dart';
 import 'package:fisher/models/FlashCardCollection.dart';
 import 'package:flutter/material.dart';
 
@@ -14,17 +15,18 @@ class _CardsPageState extends State<CardsPage> {
   Widget build(BuildContext context) {
     FlashCardCollection data = widget.collection;
     ColorScheme theme = Theme.of(context).colorScheme;
-    var showData = data.collection;
+    List<FlashCard> showData = data.collection.map((item)=>item).toList();
 
     return Scaffold(
-      backgroundColor: theme.error,
+      backgroundColor: theme.background,
       appBar: AppBar(
         foregroundColor: theme.secondary,
         backgroundColor: theme.background,
         elevation: 0,
         title: Text(data.title),
         actions: [
-          IconButton(onPressed: () {}, icon: const Icon(Icons.more_horiz_rounded))
+          IconButton(
+              onPressed: () {}, icon: const Icon(Icons.more_horiz_rounded))
         ],
       ),
       body: Column(
@@ -79,8 +81,7 @@ class _CardsPageState extends State<CardsPage> {
                         color: theme.secondary,
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
-                        letterSpacing: 0.5
-                     ),
+                        letterSpacing: 0.5),
                   ),
                   Padding(
                     padding:
@@ -118,6 +119,55 @@ class _CardsPageState extends State<CardsPage> {
                     ]))
               ],
             ),
+          ),
+          Container(
+            color: theme.background,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                children: [
+                  Text(
+                    "Flash cards",
+                    style: TextStyle(
+                        color: theme.secondary,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                        letterSpacing: 0.5),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Expanded(
+            child: ListView.builder(
+                itemCount: data.collection.length,
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                itemBuilder: (context, index) => Card(
+                      color: theme.primary,
+                      margin: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 8),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10)),
+                      child: SizedBox(
+                        height: 80,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 5),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Text(data.collection[index].term,
+                                  style: TextStyle(
+                                      color: theme.secondary, fontSize: 18)),
+                              Text(data.collection[index].definition,
+                                  style: TextStyle(
+                                      color: theme.secondary, fontSize: 18)),
+                            ],
+                          ),
+                        ),
+                      ),
+                    )),
           )
         ],
       ),
