@@ -11,10 +11,17 @@ class Collections{
         FlashCardCollection(title: 'Programming', collection: [
           FlashCard(term: 'programming', definition: 'making electrons do math'),
           FlashCard(term: 'react native', definition: "something I don't use"),
+          FlashCard(term: 'placeholder_term', definition: "placeholder_def"),
+          FlashCard(term: 'placeholder_term', definition: "placeholder_def"),
+          FlashCard(term: 'placeholder_term', definition: "placeholder_def"),
+
         ]),
         FlashCardCollection(title: 'Homework', collection: [
           FlashCard(term: 'nuclear warhead', definition: 'funny thing that is in my basement'),
           FlashCard(term: 'apocalypse', definition: "future"),
+          FlashCard(term: 'placeholder_term', definition: "placeholder_def"),
+          FlashCard(term: 'placeholder_term', definition: "placeholder_def"),
+          FlashCard(term: 'placeholder_term', definition: "placeholder_def"),
         ]),
 
       ];

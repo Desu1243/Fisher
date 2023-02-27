@@ -1,5 +1,6 @@
 import 'package:fisher/models/FlashCard.dart';
 import 'package:fisher/models/FlashCardCollection.dart';
+import 'package:fisher/pages/learn.dart';
 import 'package:flutter/material.dart';
 
 class CardsPage extends StatefulWidget {
@@ -16,7 +17,6 @@ class _CardsPageState extends State<CardsPage> {
     FlashCardCollection data = widget.collection;
     ColorScheme theme = Theme.of(context).colorScheme;
     List<FlashCard> showData = List.of(data.collection);
-
 
     return Scaffold(
       backgroundColor: theme.background,
@@ -51,7 +51,9 @@ class _CardsPageState extends State<CardsPage> {
                       width: 300,
                       child: Center(
                           child: Text(
-                            showData[index].toggle ? showData[index].term : showData[index].definition,
+                        showData[index].toggle
+                            ? showData[index].term
+                            : showData[index].definition,
                         style: TextStyle(
                             fontSize: 18,
                             color: theme.primary,
@@ -83,10 +85,13 @@ class _CardsPageState extends State<CardsPage> {
                         letterSpacing: 0.5),
                   ),
                   Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
-                    child: Container(color: theme.secondary, height: 16, width: 1,)
-                  ),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 5, vertical: 2),
+                      child: Container(
+                        color: theme.secondary,
+                        height: 16,
+                        width: 1,
+                      )),
                   Text("${data.collection.length} terms",
                       style: TextStyle(color: theme.secondary)),
                 ],
@@ -98,7 +103,14 @@ class _CardsPageState extends State<CardsPage> {
             child: Column(
               children: [
                 ElevatedButton(
-                    onPressed: () => {},
+                    onPressed: () => {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    LearnPage(flashCardCollection: data),
+                              ))
+                        },
                     style: ButtonStyle(
                         shape: MaterialStatePropertyAll(RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10)))),
@@ -150,7 +162,8 @@ class _CardsPageState extends State<CardsPage> {
                       child: SizedBox(
                         height: 80,
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 5),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 18, vertical: 5),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
