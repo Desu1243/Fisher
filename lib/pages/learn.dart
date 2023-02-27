@@ -4,11 +4,8 @@ import '../models/FlashCardCollection.dart';
 
 class LearnPage extends StatefulWidget {
   final FlashCardCollection flashCardCollection;
-  late FlashCardCollection shuffledCollection;
-  LearnPage({super.key, required this.flashCardCollection}){
-    List<FlashCard> shuffledCollection = [...flashCardCollection.collection];
-    shuffledCollection.shuffle();
-  }
+
+  const LearnPage({super.key, required this.flashCardCollection});
 
   @override
   State<LearnPage> createState() => _LearnPageState();
@@ -18,11 +15,20 @@ class _LearnPageState extends State<LearnPage> {
   int progress = 0;
   int knownTerms = 0;
   int unknownTerms = 0;
+  List<FlashCard> shuffledCollection = List.empty();
+
+  @override
+  void initState() {
+    shuffledCollection = [...widget.flashCardCollection.collection];
+    shuffledCollection.shuffle();
+    super.initState();
+  }
+
 
   @override
   Widget build(BuildContext context) {
     ColorScheme theme = Theme.of(context).colorScheme;
-
+    List<FlashCard> collection = widget.flashCardCollection.collection;
 
     return Scaffold(
       backgroundColor: theme.background,
@@ -63,7 +69,15 @@ class _LearnPageState extends State<LearnPage> {
                     style: TextStyle(color: theme.surface, fontSize: 18)),
               )
             ],
-          )
+          ),
+          Expanded(child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
+            child: Container(
+              color: theme.primary,
+              alignment: Alignment.center,
+              child: Text(shuffledCollection[progress].term),
+            ),
+          ))
         ],
       ),
       bottomNavigationBar: Row( ///buttons :D
@@ -71,7 +85,6 @@ class _LearnPageState extends State<LearnPage> {
           Expanded( ///don't know button :(
             child: ElevatedButton(
                 onPressed: () => {
-                  print(shuffledCollection[0].term),
                   progress++,
                   unknownTerms++,
                   ///next card
@@ -94,6 +107,8 @@ class _LearnPageState extends State<LearnPage> {
                   progress++,
                   knownTerms++,
                   ///next card
+
+                  setState(() {})
                 },
                 style: ButtonStyle(
                   shape: const MaterialStatePropertyAll(RoundedRectangleBorder(
