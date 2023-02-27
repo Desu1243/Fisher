@@ -71,7 +71,7 @@ class _CardsPageState extends State<CardsPage> {
           Container(
             color: theme.background,
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
               child: Row(
                 children: [
                   Text(
@@ -85,8 +85,7 @@ class _CardsPageState extends State<CardsPage> {
                   Padding(
                     padding:
                         const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
-                    child: VerticalDivider(
-                        width: 2.0, color: theme.onPrimary, thickness: 2.0),
+                    child: Container(color: theme.secondary, height: 16, width: 1,)
                   ),
                   Text("${data.collection.length} terms",
                       style: TextStyle(color: theme.secondary)),
@@ -105,7 +104,7 @@ class _CardsPageState extends State<CardsPage> {
                             borderRadius: BorderRadius.circular(10)))),
                     child: Row(children: [
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(10, 20, 20, 20),
+                        padding: const EdgeInsets.fromLTRB(5, 15, 15, 15),
                         child: Icon(
                           Icons.menu_book,
                           color: theme.surface,
@@ -122,7 +121,7 @@ class _CardsPageState extends State<CardsPage> {
           Container(
             color: theme.background,
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
               child: Row(
                 children: [
                   Text(
