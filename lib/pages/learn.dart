@@ -4,23 +4,25 @@ import '../models/FlashCardCollection.dart';
 
 class LearnPage extends StatefulWidget {
   final FlashCardCollection flashCardCollection;
-  const LearnPage({super.key, required this.flashCardCollection});
+  late FlashCardCollection shuffledCollection;
+  LearnPage({super.key, required this.flashCardCollection}){
+    List<FlashCard> shuffledCollection = [...flashCardCollection.collection];
+    shuffledCollection.shuffle();
+  }
 
   @override
   State<LearnPage> createState() => _LearnPageState();
 }
 
 class _LearnPageState extends State<LearnPage> {
+  int progress = 0;
+  int knownTerms = 0;
+  int unknownTerms = 0;
+
   @override
   Widget build(BuildContext context) {
     ColorScheme theme = Theme.of(context).colorScheme;
-    List<FlashCard> collection = widget.flashCardCollection.collection;
-    List<FlashCard> shuffledCollection = [...collection];
-    shuffledCollection.shuffle();
 
-    int progress = 0;
-    int knownTerms = 0;
-    int unknownTerms = 0;
 
     return Scaffold(
       backgroundColor: theme.background,
@@ -64,11 +66,18 @@ class _LearnPageState extends State<LearnPage> {
           )
         ],
       ),
-      bottomNavigationBar: Row(
+      bottomNavigationBar: Row( ///buttons :D
         children: [
-          Expanded(
+          Expanded( ///don't know button :(
             child: ElevatedButton(
-                onPressed: () => {},
+                onPressed: () => {
+                  print(shuffledCollection[0].term),
+                  progress++,
+                  unknownTerms++,
+                  ///next card
+
+                  setState(() {})
+                },
                 style: ButtonStyle(
                     shape: const MaterialStatePropertyAll(RoundedRectangleBorder(
                         borderRadius:
@@ -79,9 +88,13 @@ class _LearnPageState extends State<LearnPage> {
                   child: Icon(Icons.clear_rounded, color: theme.background, size: 50),
                 )),
           ),
-          Expanded(
+          Expanded( ///know button :)
             child: ElevatedButton(
-                onPressed: () => {},
+                onPressed: () => {
+                  progress++,
+                  knownTerms++,
+                  ///next card
+                },
                 style: ButtonStyle(
                   shape: const MaterialStatePropertyAll(RoundedRectangleBorder(
                       borderRadius:
