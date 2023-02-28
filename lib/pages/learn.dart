@@ -21,6 +21,7 @@ class _LearnPageState extends State<LearnPage> {
   void initState() {
     shuffledCollection = [...widget.flashCardCollection.collection];
     shuffledCollection.shuffle();
+    shuffledCollection[0].toggle = true;
     super.initState();
   }
 
@@ -105,6 +106,7 @@ class _LearnPageState extends State<LearnPage> {
                             else
                               {lp.unknownTerms++, lp.doneLearning = true},
                           },
+                        shuffledCollection[lp.progress].toggle = true,
                         setState(() {})
                       },
                   style: ButtonStyle(
@@ -132,6 +134,7 @@ class _LearnPageState extends State<LearnPage> {
                             else
                               {lp.knownTerms++, lp.doneLearning = true},
                           },
+                        shuffledCollection[lp.progress].toggle = true,
                         setState(() {})
                       },
                   style: ButtonStyle(
@@ -163,12 +166,18 @@ class LearnCard extends StatelessWidget {
   Widget build(BuildContext context) {
     ColorScheme theme = Theme.of(context).colorScheme;
     if (!learningProgress.doneLearning) {
+      /// flash card
       return Card(
         color: theme.primary,
-        shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(15))),
-        child: Center(
-          child: Text(card.toggle ? card.term : card.definition,
-              style: TextStyle(color: theme.secondary)),
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(15))),
+        child: Padding(
+          padding: const EdgeInsets.all(10),
+          child: Center(
+            child: Text(card.toggle ? card.term : card.definition,
+                textAlign: TextAlign.center,
+                style: TextStyle(color: theme.secondary, fontSize: 20)),
+          ),
         ),
       );
     } else {
@@ -185,6 +194,7 @@ class LearnCard extends StatelessWidget {
         knownPercent = (learningProgress.knownTerms / sum * 100).toInt();
       }
 
+      /// learning summary
       return Column(
         children: [
           Padding(
@@ -223,7 +233,7 @@ class LearnCard extends StatelessWidget {
                 ),
               ),
 
-              ///
+              /// progress summary
               Padding(
                 padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
                 child: Column(
@@ -246,6 +256,8 @@ class LearnCard extends StatelessWidget {
               )
             ],
           ),
+
+          /// go back button
           ElevatedButton(
             onPressed: () => {
               Navigator.pop(context),
