@@ -184,8 +184,8 @@ class LearnCard extends StatelessWidget {
       int sum = learningProgress.knownTerms + learningProgress.unknownTerms;
       int knownPercent = 0;
       Map<String, double> dataMap = {
-        "Known terms": learningProgress.knownTerms.toDouble(),
         "Unknown terms": learningProgress.unknownTerms.toDouble(),
+        "Known terms": learningProgress.knownTerms.toDouble(),
       };
 
       if (learningProgress.knownTerms == sum) {
@@ -222,7 +222,7 @@ class LearnCard extends StatelessWidget {
                       chartValuesOptions: const ChartValuesOptions(
                         showChartValues: false,
                       ),
-                      colorList: [theme.surface, theme.error],
+                      colorList: [theme.error, theme.surface],
                     ),
                     Center(
                         child: Text(
