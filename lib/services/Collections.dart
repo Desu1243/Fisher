@@ -13,7 +13,7 @@ class Collections{
           FlashCard(term: 'react native', definition: "something I don't use"),
           FlashCard(term: 'placeholder_term', definition: "placeholder_def"),
           FlashCard(term: 'placeholder_term', definition: "placeholder_def"),
-          FlashCard(term: 'placeholder_term', definition: "placeholder_def"),
+          FlashCard(term: 'very very very very very very very very long term', definition: "very very very very very very very very very long definition"),
 
         ]),
         FlashCardCollection(title: 'Homework', collection: [
