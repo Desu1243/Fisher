@@ -18,7 +18,7 @@ class _LoadingPageState extends State<LoadingPage> {
   void setupFlashCardsCollections() async {
     Collections collections = Collections();
     await collections.getData();
-    Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage(flashCardCollection: collections.collectionList)));
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage(flashCardCollection: collections.collectionList)));
   }
 
   @override
