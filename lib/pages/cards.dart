@@ -32,6 +32,7 @@ class _CardsPageState extends State<CardsPage> {
       ),
       body: Column(
         children: [
+          /// scrollable horizontally flash cards collection
           Container(
             color: theme.primary,
             height: 180,
@@ -70,6 +71,7 @@ class _CardsPageState extends State<CardsPage> {
               ),
             ),
           ),
+          /// flash card title and term count
           Container(
             color: theme.background,
             child: Padding(
@@ -98,6 +100,7 @@ class _CardsPageState extends State<CardsPage> {
               ),
             ),
           ),
+          /// learn using flash cards button
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
             child: Column(
@@ -130,6 +133,7 @@ class _CardsPageState extends State<CardsPage> {
               ],
             ),
           ),
+          /// "Flash cards" divider
           Container(
             color: theme.background,
             child: Padding(
@@ -148,6 +152,7 @@ class _CardsPageState extends State<CardsPage> {
               ),
             ),
           ),
+          /// scrollable flash card list on bottom with terms and definitions
           Expanded(
             child: ListView.builder(
                 itemCount: data.collection.length,
@@ -159,23 +164,21 @@ class _CardsPageState extends State<CardsPage> {
                           horizontal: 20, vertical: 8),
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10)),
-                      child: SizedBox(
-                        height: 80,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 18, vertical: 5),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Text(data.collection[index].term,
-                                  style: TextStyle(
-                                      color: theme.secondary, fontSize: 18)),
-                              Text(data.collection[index].definition,
-                                  style: TextStyle(
-                                      color: theme.secondary, fontSize: 18)),
-                            ],
-                          ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 18, vertical: 15),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Text(data.collection[index].term,
+                                style: TextStyle(
+                                    color: theme.secondary, fontSize: 18)),
+                            Divider(height: 15, color: theme.primary,),
+                            Text(data.collection[index].definition,
+                                style: TextStyle(
+                                    color: theme.secondary, fontSize: 18)),
+                          ],
                         ),
                       ),
                     )),
