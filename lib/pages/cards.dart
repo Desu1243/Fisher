@@ -26,8 +26,7 @@ class _CardsPageState extends State<CardsPage> {
         elevation: 0,
         title: Text(data.title),
         actions: [
-          IconButton(
-              onPressed: () {}, icon: const Icon(Icons.more_horiz_rounded))
+          DeleteCollection()
         ],
       ),
       body: Column(
@@ -188,3 +187,35 @@ class _CardsPageState extends State<CardsPage> {
     );
   }
 }
+
+///delete collection button in top right corner of the screen
+class DeleteCollection extends StatelessWidget {
+  const DeleteCollection({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    ColorScheme theme = Theme.of(context).colorScheme;
+    return IconButton(onPressed: ()=>showDialog<String>(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        backgroundColor: theme.background,
+        title: Text('Delete collection?', style: TextStyle(color: theme.secondary)),
+        content: Text('You are about to delete this flash card collection. Are you sure?', style: TextStyle(color: theme.secondary)),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => {
+              Navigator.pop(context, 'OK')
+              /// remove collection from database
+            },
+            child: Text('Yes', style: TextStyle(color: theme.surface)),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, 'Cancel'),
+            child: Text('No', style: TextStyle(color: theme.error)),
+          ),
+        ],
+      ),
+    ), icon: const Icon(Icons.delete_rounded));
+  }
+}
+
