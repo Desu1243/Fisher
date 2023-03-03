@@ -121,7 +121,7 @@ class _CardsPageState extends State<CardsPage> {
                         padding: const EdgeInsets.fromLTRB(5, 15, 15, 15),
                         child: Icon(
                           Icons.menu_book,
-                          color: theme.onSurface,
+                          color: theme.surface,
                         ),
                       ),
                       Text(
