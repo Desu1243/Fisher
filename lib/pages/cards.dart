@@ -121,7 +121,7 @@ class _CardsPageState extends State<CardsPage> {
                         padding: const EdgeInsets.fromLTRB(5, 15, 15, 15),
                         child: Icon(
                           Icons.menu_book,
-                          color: theme.surface,
+                          color: theme.onSurface,
                         ),
                       ),
                       Text(
@@ -207,11 +207,11 @@ class DeleteCollection extends StatelessWidget {
               Navigator.pop(context, 'OK')
               /// remove collection from database
             },
-            child: Text('Yes', style: TextStyle(color: theme.surface)),
+            child: Text('Yes', style: TextStyle(color: theme.onSurface)),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, 'Cancel'),
-            child: Text('No', style: TextStyle(color: theme.error)),
+            child: Text('No', style: TextStyle(color: theme.onError)),
           ),
         ],
       ),

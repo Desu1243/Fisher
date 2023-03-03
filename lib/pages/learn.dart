@@ -51,24 +51,24 @@ class _LearnPageState extends State<LearnPage> {
                   width: 50,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                      border: Border.all(width: 1, color: theme.error),
+                      border: Border.all(width: 1, color: theme.onError),
                       borderRadius: const BorderRadius.only(
                           bottomRight: Radius.circular(10),
                           topRight: Radius.circular(10))),
                   child: Text(lp.unknownTerms.toString(),
-                      style: TextStyle(color: theme.error, fontSize: 18)),
+                      style: TextStyle(color: theme.onError, fontSize: 18)),
                 ),
                 Container(
                   height: 50,
                   width: 50,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                      border: Border.all(width: 1, color: theme.surface),
+                      border: Border.all(width: 1, color: theme.onSurface),
                       borderRadius: const BorderRadius.only(
                           bottomLeft: Radius.circular(10),
                           topLeft: Radius.circular(10))),
                   child: Text(lp.knownTerms.toString(),
-                      style: TextStyle(color: theme.surface, fontSize: 18)),
+                      style: TextStyle(color: theme.onSurface, fontSize: 18)),
                 )
               ],
             ),
@@ -114,7 +114,7 @@ class _LearnPageState extends State<LearnPage> {
                         RoundedRectangleBorder(
                             borderRadius: BorderRadius.only(
                                 topRight: Radius.circular(50)))),
-                    backgroundColor: MaterialStateProperty.all(theme.error),
+                    backgroundColor: MaterialStateProperty.all(theme.onError),
                   ),
                   child: Padding(
                     padding: const EdgeInsets.all(10),
@@ -142,7 +142,7 @@ class _LearnPageState extends State<LearnPage> {
                         RoundedRectangleBorder(
                             borderRadius: BorderRadius.only(
                                 topLeft: Radius.circular(50)))),
-                    backgroundColor: MaterialStateProperty.all(theme.surface),
+                    backgroundColor: MaterialStateProperty.all(theme.onSurface),
                   ),
                   child: Padding(
                     padding: const EdgeInsets.all(10),
@@ -222,7 +222,7 @@ class LearnCard extends StatelessWidget {
                       chartValuesOptions: const ChartValuesOptions(
                         showChartValues: false,
                       ),
-                      colorList: [theme.error, theme.surface],
+                      colorList: [theme.onError, theme.onSurface],
                     ),
                     Center(
                         child: Text(
@@ -242,12 +242,12 @@ class LearnCard extends StatelessWidget {
                   children: [
                     Text(
                       "Known terms: ${learningProgress.knownTerms}",
-                      style: TextStyle(color: theme.surface, fontSize: 20),
+                      style: TextStyle(color: theme.onSurface, fontSize: 20),
                     ),
                     Text(
                       "Unknown terms: ${learningProgress.unknownTerms}",
                       style: TextStyle(
-                        color: theme.error,
+                        color: theme.onError,
                         fontSize: 20,
                       ),
                     )
