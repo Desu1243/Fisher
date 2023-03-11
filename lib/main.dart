@@ -60,14 +60,7 @@ Future<void> getTheme() async{
   );
 }
 
-Future<void> updateTheme(int number) async{
-  var db = await openDatabase('fisher.db');
-  int count = await db.rawUpdate(
-      'UPDATE theme SET theme_number = $number WHERE id=1');
-}
-
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  updateTheme(0);
   getTheme();
 }
