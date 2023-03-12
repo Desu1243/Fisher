@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:fisher/models/FlashCard.dart';
 import 'package:fisher/models/FlashCardCollection.dart';
+import 'package:fisher/widgets/FlashCardFormItemWidget.dart';
 
 class CreatePage extends StatefulWidget {
   const CreatePage({Key? key}) : super(key: key);
@@ -10,27 +13,21 @@ class CreatePage extends StatefulWidget {
 }
 
 class _CreatePageState extends State<CreatePage> {
-  /*var listOfFields = <Widget>[];
-  TextEditingController fieldController = TextEditingController();
-  void addNewField(){
-    setState((){
-      listOfFields.add(TextFormField(controller: fieldController));
-    });*/
-
-  List<FlashCard> listOfFields = List<FlashCard>.empty();
-
   TextEditingController titleController = TextEditingController();
+  List<FlashCardFormItemWidget> flashCardForms = List.empty(growable: true);
 
-  void addFormField() {}
+  @override
+  void initState() {
+    onAddFormField();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     ColorScheme theme = Theme.of(context).colorScheme;
-    //List<FlashCard> listOfFields;
-
-    //final formKey = GlobalKey<FormState>();
 
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       backgroundColor: theme.background,
       appBar: AppBar(
         foregroundColor: theme.secondary,
@@ -40,48 +37,81 @@ class _CreatePageState extends State<CreatePage> {
         ),
         elevation: 0,
         actions: [
-          IconButton(onPressed: () {}, icon: const Icon(Icons.done_rounded))
+          IconButton(onPressed: (){
+            onSaveForm();
+          }, icon: const Icon(Icons.done_rounded))
         ],
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: theme.surface,
         onPressed: () => {
-            listOfFields.add(FlashCard(term: "", definition: "")),
-          setState(() {
-          })
+          onAddFormField(),
         },
-
         child: Icon(Icons.add, size: 50, color: theme.background),
       ),
       body: SafeArea(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-                padding: const EdgeInsets.all(8),
+                padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
                 child: TextFormField(
                   controller: titleController,
                   autofocus: false,
                   cursorColor: theme.secondary,
-                  style: TextStyle(color: theme.secondary),
+                  style: TextStyle(color: theme.secondary, fontSize: 20),
                   decoration: InputDecoration(
-                    focusColor: theme.secondary,
-                    hintText: "Title",
-                    hintStyle: TextStyle(color: theme.secondary),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: theme.surface),
+                    ),
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: theme.secondary),
+                    ),
                   ),
                 )),
-            Container(
-              color: theme.primary,
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
+              child: Text("TITLE", style: TextStyle(color: theme.secondary)),
+            ),
+            Expanded(
               child: ListView.builder(
-                itemCount: listOfFields.length,
+                itemCount: flashCardForms.length,
                 scrollDirection: Axis.vertical,
-                shrinkWrap: true,
-                itemBuilder: (context, index) =>
-                    FlashCard(term: "", definition: "").formField(theme),
+                itemBuilder: (context, index) {
+                  return flashCardForms[index];
+                },
               ),
             )
           ],
         ),
       ),
     );
+  }
+  onSaveForm(){
+    List<FlashCard> _flashCards = List.empty(growable: true);
+    flashCardForms.forEach((fc) {
+      _flashCards.add(FlashCard(term: fc.flashCard.term, definition: fc.flashCard.definition));
+    });
+    FlashCardCollection flashCardCollection = FlashCardCollection(title: titleController.text, collection: _flashCards);
+
+    flashCardCollection.collection.removeWhere((fc) => fc.definition=="" || fc.term=="");
+    if(flashCardCollection.collection.isNotEmpty){
+      ///save to database
+    }
+
+    print(flashCardCollection.title);
+    flashCardCollection.collection.forEach((f) {
+      print(f.term);
+      print(f.definition);
+    });
+
+    Navigator.pop(context);
+  }
+
+  onAddFormField(){
+    setState((){
+      FlashCard _flashCard = FlashCard(term: "", definition: "");
+      flashCardForms.add(FlashCardFormItemWidget(flashCard: _flashCard));
+    });
   }
 }
