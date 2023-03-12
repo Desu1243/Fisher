@@ -35,6 +35,7 @@ class _CardsPageState extends State<CardsPage> {
           Container(
             color: theme.primary,
             height: 180,
+            width: double.infinity,
             child: ListView.builder(
               itemCount: data.collection.length,
               scrollDirection: Axis.horizontal,
@@ -93,8 +94,8 @@ class _CardsPageState extends State<CardsPage> {
                         height: 16,
                         width: 1,
                       )),
-                  Text("${data.collection.length} terms",
-                      style: TextStyle(color: theme.secondary)),
+                  Text("${data.collection.length} ${data.collection.length > 1 ? "terms" : "term"}",
+                      style: TextStyle(color: theme.secondary, fontSize: 15)),
                 ],
               ),
             ),

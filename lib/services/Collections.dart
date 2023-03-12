@@ -1,30 +1,48 @@
 import 'package:fisher/models/FlashCard.dart';
 import 'package:fisher/models/FlashCardCollection.dart';
+import 'package:sqflite/sqflite.dart';
 
 class Collections{
   late List<FlashCardCollection> collectionList = [];
 
   Future<void> getData() async {
-    await Future.delayed(Duration(seconds: 3),(){
-      this.collectionList = [
+    var db = await openDatabase('fisher.db');
+    List<Map> dbCollections = await db.rawQuery('SELECT * FROM collections');
 
-        FlashCardCollection(title: 'Programming', collection: [
-          FlashCard(term: 'programming', definition: 'making electrons do math'),
-          FlashCard(term: 'react native', definition: "something I don't use"),
-          FlashCard(term: 'placeholder_term', definition: "placeholder_def"),
-          FlashCard(term: 'placeholder_term', definition: "placeholder_def"),
-          FlashCard(term: 'very very very very very very very very long term', definition: "very very very very very very very very very long definition"),
+    dbCollections.forEach((colItem) async {
+      List<FlashCard> _collection = List.empty(growable: true);
+      List<Map> dbCards = await db.rawQuery('SELECT * FROM flashcards WHERE collection_id="${colItem['id']}"');
 
-        ]),
-        FlashCardCollection(title: 'Homework', collection: [
-          FlashCard(term: 'nuclear warhead', definition: 'funny thing that is in my basement'),
-          FlashCard(term: 'apocalypse', definition: "future"),
-          FlashCard(term: 'placeholder_term', definition: "placeholder_def"),
-          FlashCard(term: 'placeholder_term', definition: "placeholder_def"),
-          FlashCard(term: 'placeholder_term', definition: "placeholder_def"),
-        ]),
+      dbCards.forEach((card){
+        _collection.add(FlashCard(term: card['term'], definition: card['definition']));
+      });
 
-      ];
+      collectionList.add(FlashCardCollection(title: colItem['title'], collection: _collection));
+    });
+
+    await Future.delayed(const Duration(milliseconds: 500),(){});
+  }
+
+
+  Future<void> saveCollection(FlashCardCollection flashCardCollection) async {
+    var db = await openDatabase('fisher.db');
+
+    await db.execute("CREATE TABLE IF NOT EXISTS collections (id integer primary key autoincrement, title TEXT NOT NULL)");
+    await db.execute("CREATE TABLE IF NOT EXISTS flashcards (id integer primary key autoincrement, collection_id INT NOT NULL, term TEXT NOT NULL, definition TEXT NOT NULL, FOREIGN KEY (collection_id) REFERENCES collections(id))");
+
+    List<Map> dbCollection = await db.rawQuery('SELECT * FROM collections');
+    await db.insert(
+        'collections',
+        flashCardCollection.toMap(),
+        conflictAlgorithm: ConflictAlgorithm.replace
+    );
+    dbCollection = await db.rawQuery('SELECT id FROM collections WHERE title="${flashCardCollection.title}"');
+    flashCardCollection.collection.forEach((item) async {
+        await db.insert(
+            'flashcards',
+            item.toMap(dbCollection[0]['id']),
+            conflictAlgorithm: ConflictAlgorithm.replace
+        );
     });
   }
 }

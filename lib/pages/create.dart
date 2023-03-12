@@ -1,9 +1,12 @@
 import 'dart:convert';
 
+import 'package:fisher/services/Collections.dart';
 import 'package:flutter/material.dart';
 import 'package:fisher/models/FlashCard.dart';
 import 'package:fisher/models/FlashCardCollection.dart';
 import 'package:fisher/widgets/FlashCardFormItemWidget.dart';
+
+import 'loading.dart';
 
 class CreatePage extends StatefulWidget {
   const CreatePage({Key? key}) : super(key: key);
@@ -89,6 +92,7 @@ class _CreatePageState extends State<CreatePage> {
   }
   onSaveForm(){
     List<FlashCard> _flashCards = List.empty(growable: true);
+    Collections collectionsService = Collections();
     flashCardForms.forEach((fc) {
       _flashCards.add(FlashCard(term: fc.flashCard.term, definition: fc.flashCard.definition));
     });
@@ -96,16 +100,10 @@ class _CreatePageState extends State<CreatePage> {
 
     flashCardCollection.collection.removeWhere((fc) => fc.definition=="" || fc.term=="");
     if(flashCardCollection.collection.isNotEmpty){
-      ///save to database
+      collectionsService.saveCollection(flashCardCollection);
     }
 
-    print(flashCardCollection.title);
-    flashCardCollection.collection.forEach((f) {
-      print(f.term);
-      print(f.definition);
-    });
-
-    Navigator.pop(context);
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoadingPage()));
   }
 
   onAddFormField(){
