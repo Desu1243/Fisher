@@ -65,6 +65,7 @@ Future<void> getTheme() async{
   var themeIndex = 0;
   try {
     var db = await openDatabase('fisher.db');
+
     await db.execute(
         "CREATE TABLE IF NOT EXISTS theme (id INT NOT NULL, theme_number INT NOT NULL, PRIMARY KEY (id))");
     List<Map> dbThemes = await db.rawQuery('SELECT * FROM theme');

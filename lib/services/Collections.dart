@@ -7,6 +7,9 @@ class Collections{
 
   Future<void> getData() async {
     var db = await openDatabase('fisher.db');
+    await db.execute("CREATE TABLE IF NOT EXISTS collections (id integer primary key autoincrement, title TEXT NOT NULL)");
+    await db.execute("CREATE TABLE IF NOT EXISTS flashcards (id integer primary key autoincrement, collection_id INT NOT NULL, term TEXT NOT NULL, definition TEXT NOT NULL, FOREIGN KEY (collection_id) REFERENCES collections(id))");
+
     List<Map> dbCollections = await db.rawQuery('SELECT * FROM collections');
 
     dbCollections.forEach((colItem) async {
