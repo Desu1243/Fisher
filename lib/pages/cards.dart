@@ -27,9 +27,7 @@ class _CardsPageState extends State<CardsPage> {
         backgroundColor: theme.background,
         elevation: 0,
         title: Text(data.title),
-        actions: [
-          DeleteCollection(collectionId: data.id, pageContext: context)
-        ],
+        actions: [DeleteCollection(collectionId: data.id)],
       ),
       body: Column(
         children: [
@@ -73,6 +71,7 @@ class _CardsPageState extends State<CardsPage> {
               ),
             ),
           ),
+
           /// flash card title and term count
           Container(
             color: theme.background,
@@ -96,12 +95,14 @@ class _CardsPageState extends State<CardsPage> {
                         height: 16,
                         width: 1,
                       )),
-                  Text("${data.collection.length} ${data.collection.length > 1 ? "terms" : "term"}",
+                  Text(
+                      "${data.collection.length} ${data.collection.length > 1 ? "terms" : "term"}",
                       style: TextStyle(color: theme.secondary, fontSize: 15)),
                 ],
               ),
             ),
           ),
+
           /// learn using flash cards button
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
@@ -135,6 +136,7 @@ class _CardsPageState extends State<CardsPage> {
               ],
             ),
           ),
+
           /// "Flash cards" divider
           Container(
             color: theme.background,
@@ -154,6 +156,7 @@ class _CardsPageState extends State<CardsPage> {
               ),
             ),
           ),
+
           /// scrollable flash card list on bottom with terms and definitions
           Expanded(
             child: ListView.builder(
@@ -176,7 +179,10 @@ class _CardsPageState extends State<CardsPage> {
                             Text(data.collection[index].term,
                                 style: TextStyle(
                                     color: theme.secondary, fontSize: 18)),
-                            Divider(height: 15, color: theme.primary,),
+                            Divider(
+                              height: 15,
+                              color: theme.primary,
+                            ),
                             Text(data.collection[index].definition,
                                 style: TextStyle(
                                     color: theme.secondary, fontSize: 18)),
@@ -194,35 +200,39 @@ class _CardsPageState extends State<CardsPage> {
 ///delete collection button in top right corner of the screen
 class DeleteCollection extends StatelessWidget {
   final int collectionId;
-  final BuildContext pageContext;
-  const DeleteCollection({super.key, required this.collectionId, required this.pageContext});
+  const DeleteCollection({super.key, required this.collectionId});
 
   @override
   Widget build(BuildContext context) {
     ColorScheme theme = Theme.of(context).colorScheme;
-    return IconButton(onPressed: ()=>showDialog<String>(
-      context: context,
-      builder: (BuildContext context) => AlertDialog(
-        backgroundColor: theme.background,
-        title: Text('Delete collection?', style: TextStyle(color: theme.secondary)),
-        content: Text('You are about to delete this flash card collection. Are you sure?', style: TextStyle(color: theme.secondary)),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () async {
-              /// remove collection from database
-              Collections instance = Collections();
-              await instance.deleteCollection(collectionId);
-              Phoenix.rebirth(context);
-            },
-            child: Text('Yes', style: TextStyle(color: theme.onSurface)),
-          ),
-          TextButton(
-            onPressed: () => Navigator.pop(context, 'Cancel'),
-            child: Text('No', style: TextStyle(color: theme.onError)),
-          ),
-        ],
-      ),
-    ), icon: const Icon(Icons.delete_rounded));
+    return IconButton(
+        onPressed: () => showDialog<String>(
+              context: context,
+              builder: (BuildContext context) => AlertDialog(
+                backgroundColor: theme.background,
+                title: Text('Delete collection?',
+                    style: TextStyle(color: theme.secondary)),
+                content: Text(
+                    'You are about to delete this flash card collection. Are you sure?',
+                    style: TextStyle(color: theme.secondary)),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () async {
+                      /// remove collection from database
+                      Collections instance = Collections();
+                      await instance.deleteCollection(collectionId);
+                      Phoenix.rebirth(context);
+                    },
+                    child:
+                        Text('Yes', style: TextStyle(color: theme.onSurface)),
+                  ),
+                  TextButton(
+                    onPressed: () => Navigator.pop(context, 'Cancel'),
+                    child: Text('No', style: TextStyle(color: theme.onError)),
+                  ),
+                ],
+              ),
+            ),
+        icon: const Icon(Icons.delete_rounded));
   }
 }
-

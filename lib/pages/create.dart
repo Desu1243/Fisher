@@ -39,9 +39,11 @@ class _CreatePageState extends State<CreatePage> {
         ),
         elevation: 0,
         actions: [
-          IconButton(onPressed: (){
-            onSaveForm();
-          }, icon: const Icon(Icons.done_rounded))
+          IconButton(
+              onPressed: () {
+                onSaveForm();
+              },
+              icon: const Icon(Icons.done_rounded))
         ],
       ),
       floatingActionButton: FloatingActionButton(
@@ -72,7 +74,8 @@ class _CreatePageState extends State<CreatePage> {
                   ),
                 )),
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
+              padding:
+                  const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
               child: Text("TITLE", style: TextStyle(color: theme.secondary)),
             ),
             Expanded(
@@ -90,26 +93,32 @@ class _CreatePageState extends State<CreatePage> {
     );
   }
 
-  onSaveForm(){
+  /// saves flash card collection in database
+  onSaveForm() {
     List<FlashCard> _flashCards = List.empty(growable: true);
     Collections collectionsService = Collections();
     flashCardForms.forEach((fc) {
-      _flashCards.add(FlashCard(term: fc.flashCard.term, definition: fc.flashCard.definition));
+      _flashCards.add(FlashCard(
+          term: fc.flashCard.term, definition: fc.flashCard.definition));
     });
-    FlashCardCollection flashCardCollection = FlashCardCollection(title: titleController.text, collection: _flashCards, id:0);
+    if (titleController.text.isNotEmpty) {
+      FlashCardCollection flashCardCollection = FlashCardCollection(
+          title: titleController.text, collection: _flashCards, id: 0);
 
-    flashCardCollection.collection.removeWhere((fc) => fc.definition=="" || fc.term=="");
-    if(flashCardCollection.collection.isNotEmpty){
-      collectionsService.saveCollection(flashCardCollection);
+      flashCardCollection.collection
+          .removeWhere((fc) => fc.definition == "" || fc.term == "");
+      if (flashCardCollection.collection.isNotEmpty) {
+        collectionsService.saveCollection(flashCardCollection);
+      }
     }
-
     Phoenix.rebirth(context);
   }
 
-  onAddFormField(){
-    setState((){
-      FlashCard _flashCard = FlashCard(term: "", definition: "");
-      flashCardForms.add(FlashCardFormItemWidget(flashCard: _flashCard));
+  /// adds new form field to the form
+  onAddFormField() {
+    setState(() {
+      FlashCard flashCard = FlashCard(term: "", definition: "");
+      flashCardForms.add(FlashCardFormItemWidget(flashCard: flashCard));
     });
   }
 }

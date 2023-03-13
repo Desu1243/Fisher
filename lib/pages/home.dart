@@ -120,11 +120,13 @@ class HomeNavigationBar extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
+          /// home button
           IconButton(
               icon: const Icon(Icons.home_filled),
               iconSize: 48,
               color: theme.secondary,
               onPressed: () {
+                /// scrolls to the top of the flash cards list
                 if(listOfCollections.isNotEmpty) {
                   scrollController.animateTo(
                       scrollController.position.minScrollExtent,
@@ -138,6 +140,7 @@ class HomeNavigationBar extends StatelessWidget {
             child: VerticalDivider(
                 width: 2.0, color: theme.secondary, thickness: 2.0),
           ),
+          /// create flash card collection button
           IconButton(
               icon: const Icon(Icons.add_circle),
               iconSize: 48,
@@ -152,6 +155,7 @@ class HomeNavigationBar extends StatelessWidget {
             child: VerticalDivider(
                 width: 2.0, color: theme.secondary, thickness: 2.0),
           ),
+          /// settings button
           IconButton(
               icon: const Icon(Icons.settings),
               iconSize: 48,
