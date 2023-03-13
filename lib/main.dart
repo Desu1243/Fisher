@@ -1,6 +1,7 @@
 import 'package:fisher/pages/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 
 List<ThemeData> themes = [
   /// forest green - default
@@ -81,9 +82,12 @@ Future<void> getTheme() async{
     print(e);
   }
 
-  runApp(MaterialApp(
-    home: const LoadingPage(),
-    theme: themes[themeIndex],
+  runApp(
+    Phoenix(
+      child: MaterialApp(
+        home: const LoadingPage(),
+        theme: themes[themeIndex],
+        ),
     ),
   );
 }

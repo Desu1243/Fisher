@@ -5,8 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:fisher/models/FlashCard.dart';
 import 'package:fisher/models/FlashCardCollection.dart';
 import 'package:fisher/widgets/FlashCardFormItemWidget.dart';
-
-import 'loading.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 
 class CreatePage extends StatefulWidget {
   const CreatePage({Key? key}) : super(key: key);
@@ -104,7 +103,7 @@ class _CreatePageState extends State<CreatePage> {
       collectionsService.saveCollection(flashCardCollection);
     }
 
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoadingPage()));
+    Phoenix.rebirth(context);
   }
 
   onAddFormField(){

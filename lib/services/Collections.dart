@@ -5,6 +5,7 @@ import 'package:sqflite/sqflite.dart';
 class Collections{
   late List<FlashCardCollection> collectionList = [];
 
+  /// fetches data from database, creates db and tables if they don't exist
   Future<void> getData() async {
     var db = await openDatabase('fisher.db');
     await db.execute("CREATE TABLE IF NOT EXISTS collections (id integer primary key autoincrement, title TEXT NOT NULL)");
@@ -23,10 +24,10 @@ class Collections{
       collectionList.add(FlashCardCollection(title: colItem['title'], collection: _collection, id: colItem['id']));
     });
 
-    await Future.delayed(const Duration(milliseconds: 400),(){});
+    await Future.delayed(const Duration(milliseconds: 300),(){});
   }
 
-
+  /// saves flash card collection in database
   Future<void> saveCollection(FlashCardCollection flashCardCollection) async {
     var db = await openDatabase('fisher.db');
 
@@ -47,5 +48,10 @@ class Collections{
             conflictAlgorithm: ConflictAlgorithm.replace
         );
     });
+  }
+
+  Future<void> deleteCollection(int collectionId) async {
+    var db = await openDatabase('fisher.db');
+    await db.execute('DELETE FROM collections WHERE id="$collectionId"');
   }
 }

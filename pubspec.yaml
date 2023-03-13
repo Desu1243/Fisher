@@ -33,6 +33,7 @@ dependencies:
   flutter_spinkit: ^5.1.0
   sqflite: 2.2.5
   pie_chart: ^5.3.2
+  flutter_phoenix: ^1.0.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

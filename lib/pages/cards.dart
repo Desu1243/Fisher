@@ -1,7 +1,9 @@
 import 'package:fisher/models/FlashCard.dart';
 import 'package:fisher/models/FlashCardCollection.dart';
 import 'package:fisher/pages/learn.dart';
+import 'package:fisher/services/Collections.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 
 class CardsPage extends StatefulWidget {
   final FlashCardCollection collection;
@@ -26,7 +28,7 @@ class _CardsPageState extends State<CardsPage> {
         elevation: 0,
         title: Text(data.title),
         actions: [
-          DeleteCollection()
+          DeleteCollection(collectionId: data.id, pageContext: context)
         ],
       ),
       body: Column(
@@ -191,7 +193,9 @@ class _CardsPageState extends State<CardsPage> {
 
 ///delete collection button in top right corner of the screen
 class DeleteCollection extends StatelessWidget {
-  const DeleteCollection({Key? key}) : super(key: key);
+  final int collectionId;
+  final BuildContext pageContext;
+  const DeleteCollection({super.key, required this.collectionId, required this.pageContext});
 
   @override
   Widget build(BuildContext context) {
@@ -204,9 +208,11 @@ class DeleteCollection extends StatelessWidget {
         content: Text('You are about to delete this flash card collection. Are you sure?', style: TextStyle(color: theme.secondary)),
         actions: <Widget>[
           TextButton(
-            onPressed: () => {
-              Navigator.pop(context, 'OK')
+            onPressed: () async {
               /// remove collection from database
+              Collections instance = Collections();
+              await instance.deleteCollection(collectionId);
+              Phoenix.rebirth(context);
             },
             child: Text('Yes', style: TextStyle(color: theme.onSurface)),
           ),

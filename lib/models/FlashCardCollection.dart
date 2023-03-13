@@ -6,9 +6,9 @@ class FlashCardCollection{
   late List<FlashCard> collection; //flash cards that are part of a collection
 
   FlashCardCollection({
+    required this.id,
     required this.title,
-    required this.collection,
-    required this.id
+    required this.collection
   });
 
   Map<String, dynamic> toMap() {
