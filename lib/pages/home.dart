@@ -1,6 +1,8 @@
+import 'package:fisher/pages/settings.dart';
 import 'package:flutter/material.dart';
 
 import '../models/FlashCardCollection.dart';
+import '../services/Themes.dart';
 import 'cards.dart';
 import 'create.dart';
 
@@ -110,6 +112,8 @@ class HomeNavigationBar extends StatelessWidget {
     required this.listOfCollections,
   });
 
+
+
   @override
   Widget build(BuildContext context) {
     ColorScheme theme = Theme.of(context).colorScheme;
@@ -160,7 +164,11 @@ class HomeNavigationBar extends StatelessWidget {
               icon: const Icon(Icons.settings),
               iconSize: 48,
               color: theme.secondary,
-              onPressed: () {}),
+              onPressed: () async {
+                Themes themeService = Themes();
+                await themeService.getTheme();
+                Navigator.push(context, MaterialPageRoute(builder: (context) => Settings(themeId: themeService.themeId)));
+              }),
         ],
       ),
     );
