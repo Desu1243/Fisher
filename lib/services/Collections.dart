@@ -20,10 +20,10 @@ class Collections{
         _collection.add(FlashCard(term: card['term'], definition: card['definition']));
       });
 
-      collectionList.add(FlashCardCollection(title: colItem['title'], collection: _collection));
+      collectionList.add(FlashCardCollection(title: colItem['title'], collection: _collection, id: colItem['id']));
     });
 
-    await Future.delayed(const Duration(milliseconds: 500),(){});
+    await Future.delayed(const Duration(milliseconds: 400),(){});
   }
 
 

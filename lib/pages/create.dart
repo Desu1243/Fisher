@@ -90,13 +90,14 @@ class _CreatePageState extends State<CreatePage> {
       ),
     );
   }
+
   onSaveForm(){
     List<FlashCard> _flashCards = List.empty(growable: true);
     Collections collectionsService = Collections();
     flashCardForms.forEach((fc) {
       _flashCards.add(FlashCard(term: fc.flashCard.term, definition: fc.flashCard.definition));
     });
-    FlashCardCollection flashCardCollection = FlashCardCollection(title: titleController.text, collection: _flashCards);
+    FlashCardCollection flashCardCollection = FlashCardCollection(title: titleController.text, collection: _flashCards, id:0);
 
     flashCardCollection.collection.removeWhere((fc) => fc.definition=="" || fc.term=="");
     if(flashCardCollection.collection.isNotEmpty){

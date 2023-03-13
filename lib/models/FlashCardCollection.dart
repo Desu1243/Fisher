@@ -7,7 +7,8 @@ class FlashCardCollection{
 
   FlashCardCollection({
     required this.title,
-    required this.collection
+    required this.collection,
+    required this.id
   });
 
   Map<String, dynamic> toMap() {

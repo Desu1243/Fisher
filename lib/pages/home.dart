@@ -13,70 +13,102 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  ScrollController scrollController = ScrollController();
   @override
   Widget build(BuildContext context) {
     ColorScheme theme = Theme.of(context).colorScheme;
     var collections = widget.flashCardCollection;
 
-
     return Scaffold(
       backgroundColor: theme.onPrimary,
-      bottomNavigationBar: const HomeNavigationBar(),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(30, 15, 30, 0),
-          child: ScrollableCollections(listOfCollections: collections,)
-        ),
+            padding: const EdgeInsets.fromLTRB(30, 15, 30, 0),
+            child: ScrollableCollections(
+              listOfCollections: collections,
+              scrollController: scrollController,
+            )),
       ),
+      bottomNavigationBar:
+          HomeNavigationBar(
+              scrollController: scrollController,
+              listOfCollections: collections
+          ),
     );
   }
 }
 
 class ScrollableCollections extends StatelessWidget {
-
   final List<FlashCardCollection> listOfCollections;
-  const ScrollableCollections({super.key, required this.listOfCollections});
+  final ScrollController scrollController;
+  const ScrollableCollections({
+      super.key,
+      required this.listOfCollections,
+      required this.scrollController
+  });
 
   @override
   Widget build(BuildContext context) {
     ColorScheme theme = Theme.of(context).colorScheme;
     var collections = listOfCollections;
 
-    Widget scrollableCollections;
-    if(collections.isEmpty){
-      scrollableCollections = Text('Click on a plus sign at the bottom to create your first flash card collection.',
-        style: TextStyle(color: theme.secondary, fontSize: 24), textAlign: TextAlign.center);
-    }else{
-      scrollableCollections = ListView.builder(
+    Widget homePageContent;
+    if (collections.isEmpty) {
+      homePageContent = Padding(
+        padding: const EdgeInsets.symmetric(vertical: 16.0),
+        child: Text(
+            'Click on the plus sign at the bottom to create your first flash card collection.',
+            style: TextStyle(color: theme.secondary, fontSize: 24),
+            textAlign: TextAlign.center),
+      );
+    } else {
+      homePageContent = ListView.builder(
+        controller: scrollController,
         itemCount: collections.length,
         scrollDirection: Axis.vertical,
         shrinkWrap: true,
         itemBuilder: (context, index) => GestureDetector(
-          onTap: (){
-            Navigator.push(context, MaterialPageRoute(builder: (context) => CardsPage(collection: collections[index]),));
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      CardsPage(collection: collections[index]),
+                ));
           },
           child: Card(
             color: theme.secondary,
-            shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(15))),
+            shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(15))),
             margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
             child: SizedBox(
               height: 150,
               child: Center(
-                  child: Text(collections[index].title, style: TextStyle(fontSize: 18, color: theme.primary, fontWeight: FontWeight.bold),)
-              ),
+                  child: Text(
+                collections[index].title,
+                style: TextStyle(
+                    fontSize: 18,
+                    color: theme.primary,
+                    fontWeight: FontWeight.bold),
+              )),
             ),
           ),
         ),
       );
     }
 
-    return scrollableCollections;
+    return homePageContent;
   }
 }
 
-
 class HomeNavigationBar extends StatelessWidget {
-  const HomeNavigationBar({Key? key}) : super(key: key);
+  final ScrollController scrollController;
+  final List<FlashCardCollection> listOfCollections;
+  const HomeNavigationBar({
+    super.key,
+    required this.scrollController,
+    required this.listOfCollections,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -88,26 +120,43 @@ class HomeNavigationBar extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          IconButton(icon: const Icon(Icons.home_filled), iconSize: 48,
-              color: theme.secondary, onPressed: (){
-
+          IconButton(
+              icon: const Icon(Icons.home_filled),
+              iconSize: 48,
+              color: theme.secondary,
+              onPressed: () {
+                if(listOfCollections.isNotEmpty) {
+                  scrollController.animateTo(
+                      scrollController.position.minScrollExtent,
+                      curve: Curves.easeOut,
+                      duration: const Duration(milliseconds: 300));
+                }
               }),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 0.0, vertical: 12.0),
-            child: VerticalDivider(width: 2.0, color: theme.secondary, thickness: 2.0),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 0.0, vertical: 12.0),
+            child: VerticalDivider(
+                width: 2.0, color: theme.secondary, thickness: 2.0),
           ),
-          IconButton(icon: const Icon(Icons.add_circle), iconSize: 48,
-              color: theme.secondary, onPressed: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context) => CreatePage()));
+          IconButton(
+              icon: const Icon(Icons.add_circle),
+              iconSize: 48,
+              color: theme.secondary,
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const CreatePage()));
               }),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 0.0, vertical: 12.0),
-            child: VerticalDivider(width: 2.0, color: theme.secondary, thickness: 2.0),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 0.0, vertical: 12.0),
+            child: VerticalDivider(
+                width: 2.0, color: theme.secondary, thickness: 2.0),
           ),
-          IconButton(icon: const Icon(Icons.settings), iconSize: 48,
-              color: theme.secondary, onPressed: (){
-
-              }),
+          IconButton(
+              icon: const Icon(Icons.settings),
+              iconSize: 48,
+              color: theme.secondary,
+              onPressed: () {}),
         ],
       ),
     );
