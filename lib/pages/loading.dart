@@ -1,5 +1,3 @@
-import 'package:fisher/models/FlashCard.dart';
-import 'package:fisher/models/FlashCardCollection.dart';
 import 'package:fisher/pages/home.dart';
 import 'package:fisher/services/Collections.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +12,7 @@ class LoadingPage extends StatefulWidget {
 
 class _LoadingPageState extends State<LoadingPage> {
 
-  //get collection from database
+  ///get data from database
   void setupFlashCardsCollections() async {
     Collections collections = Collections();
     await collections.getData();
@@ -38,3 +36,4 @@ class _LoadingPageState extends State<LoadingPage> {
     );
   }
 }
+

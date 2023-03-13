@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:fisher/services/Collections.dart';
 import 'package:flutter/material.dart';
 import 'package:fisher/models/FlashCard.dart';
@@ -94,7 +92,7 @@ class _CreatePageState extends State<CreatePage> {
   }
 
   /// saves flash card collection in database
-  onSaveForm() {
+  onSaveForm() async {
     List<FlashCard> _flashCards = List.empty(growable: true);
     Collections collectionsService = Collections();
     flashCardForms.forEach((fc) {
@@ -111,6 +109,7 @@ class _CreatePageState extends State<CreatePage> {
         collectionsService.saveCollection(flashCardCollection);
       }
     }
+    await Future.delayed(const Duration(milliseconds: 50),(){});
     Phoenix.rebirth(context);
   }
 

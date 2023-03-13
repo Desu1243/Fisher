@@ -23,8 +23,7 @@ class Collections{
 
       collectionList.add(FlashCardCollection(title: colItem['title'], collection: _collection, id: colItem['id']));
     });
-
-    await Future.delayed(const Duration(milliseconds: 300),(){});
+    await Future.delayed(const Duration(milliseconds: 100),(){});
   }
 
   /// saves flash card collection in database
@@ -48,6 +47,7 @@ class Collections{
             conflictAlgorithm: ConflictAlgorithm.replace
         );
     });
+    await Future.delayed(const Duration(milliseconds: 50),(){});
   }
 
   Future<void> deleteCollection(int collectionId) async {
