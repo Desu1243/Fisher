@@ -3,11 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:fisher/models/FlashCard.dart';
 
 class FlashCardFormItemWidget extends StatefulWidget {
-  FlashCardFormItemWidget({super.key, required this.flashCard});
-
   FlashCard flashCard;
   final TextEditingController _termController = TextEditingController();
   final TextEditingController _definitionController = TextEditingController();
+
+  FlashCardFormItemWidget({super.key, required this.flashCard}){
+    _termController.text = flashCard.term;
+    _definitionController.text = flashCard.definition;
+  }
 
   @override
   State<StatefulWidget> createState() => _FlashCardFormItemWidgetState();

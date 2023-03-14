@@ -40,7 +40,7 @@ class _SettingsState extends State<Settings> {
             collapsedIconColor: theme.secondary,
             backgroundColor: theme.primary,
             collapsedBackgroundColor: theme.primary,
-            title: Row(children: const [
+            title: const Row(children:  [
               Icon(Icons.palette_outlined),
               SizedBox(width: 8.0),
               Text('Theme')

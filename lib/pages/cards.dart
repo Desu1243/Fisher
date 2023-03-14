@@ -1,5 +1,6 @@
 import 'package:fisher/models/FlashCard.dart';
 import 'package:fisher/models/FlashCardCollection.dart';
+import 'package:fisher/pages/edit.dart';
 import 'package:fisher/pages/learn.dart';
 import 'package:fisher/services/Collections.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +28,12 @@ class _CardsPageState extends State<CardsPage> {
         backgroundColor: theme.background,
         elevation: 0,
         title: Text(data.title),
-        actions: [DeleteCollection(collectionId: data.id)],
+        actions: [
+          DeleteCollection(collectionId: data.id),
+          IconButton(onPressed: (){
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => EditPage(data: data)));
+          }, icon: const Icon(Icons.edit))
+        ],
       ),
       body: Column(
         children: [

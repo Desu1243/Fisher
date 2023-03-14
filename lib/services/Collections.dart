@@ -53,5 +53,6 @@ class Collections{
   Future<void> deleteCollection(int collectionId) async {
     var db = await openDatabase('fisher.db');
     await db.execute('DELETE FROM collections WHERE id="$collectionId"');
+    await db.execute('DELETE FROM flashcards WHERE collection_id="$collectionId"');
   }
 }
