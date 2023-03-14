@@ -1,5 +1,5 @@
 # Fisher - Flash Card Learning App
-Fisher is a mobile app designed to help users learn using flash cards. It allows users to create and manage their own flash card collections, view their created collections, and learn using the flash cards. Additionally, the app includes a feature that allows users to change the app's theme.
+Fisher is a mobile app designed to help users learn using flash cards.
 
 ## Features
 - Create, edit, and delete flash card collections
