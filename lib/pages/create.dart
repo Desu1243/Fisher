@@ -15,6 +15,7 @@ class CreatePage extends StatefulWidget {
 class _CreatePageState extends State<CreatePage> {
   TextEditingController titleController = TextEditingController();
   List<FlashCardFormItemWidget> flashCardForms = List.empty(growable: true);
+  ScrollController formScrollController = ScrollController();
 
   @override
   void initState() {
@@ -82,6 +83,7 @@ class _CreatePageState extends State<CreatePage> {
             ),
             Expanded(
               child: ListView.builder(
+                controller: formScrollController,
                 itemCount: flashCardForms.length,
                 scrollDirection: Axis.vertical,
                 itemBuilder: (context, index) {
@@ -123,5 +125,11 @@ class _CreatePageState extends State<CreatePage> {
       FlashCard flashCard = FlashCard(term: "", definition: "");
       flashCardForms.add(FlashCardFormItemWidget(flashCard: flashCard));
     });
+    if(flashCardForms.length > 1) {
+      formScrollController.animateTo(
+          formScrollController.position.maxScrollExtent,
+          curve: Curves.easeOut,
+          duration: const Duration(milliseconds: 300));
+    }
   }
 }

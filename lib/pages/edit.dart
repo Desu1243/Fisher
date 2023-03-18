@@ -16,6 +16,7 @@ class EditPage extends StatefulWidget {
 class _EditPageState extends State<EditPage> {
   late FlashCardCollection data;
   TextEditingController titleController = TextEditingController();
+  ScrollController formScrollController = ScrollController();
   List<FlashCardFormItemWidget> flashCardForms = List.empty(growable: true);
 
   @override
@@ -88,6 +89,7 @@ class _EditPageState extends State<EditPage> {
             ),
             Expanded(
               child: ListView.builder(
+                controller: formScrollController,
                 itemCount: flashCardForms.length,
                 scrollDirection: Axis.vertical,
                 itemBuilder: (context, index) {
@@ -133,5 +135,11 @@ class _EditPageState extends State<EditPage> {
       FlashCard flashCard = FlashCard(term: "", definition: "");
       flashCardForms.add(FlashCardFormItemWidget(flashCard: flashCard));
     });
+    if(flashCardForms.length > 1) {
+      formScrollController.animateTo(
+          formScrollController.position.maxScrollExtent,
+          curve: Curves.easeOut,
+          duration: const Duration(milliseconds: 300));
+    }
   }
 }
