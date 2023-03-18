@@ -31,6 +31,7 @@ class _EditPageState extends State<EditPage> {
   @override
   Widget build(BuildContext context) {
     ColorScheme theme = Theme.of(context).colorScheme;
+    bool visibleKeyboard = MediaQuery.of(context).viewInsets.bottom != 0;
 
     return Scaffold(
       resizeToAvoidBottomInset: true,
@@ -50,12 +51,15 @@ class _EditPageState extends State<EditPage> {
               icon: const Icon(Icons.done_rounded))
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: theme.surface,
-        onPressed: () => {
-          onAddFormField(),
-        },
-        child: Icon(Icons.add, size: 50, color: theme.background),
+      floatingActionButton: Opacity(
+        opacity: visibleKeyboard ? 0.5 : 1,
+        child: FloatingActionButton(
+          backgroundColor: theme.surface,
+          onPressed: () => {
+            onAddFormField(),
+          },
+          child: Icon(Icons.add, size: 50, color: theme.background),
+        ),
       ),
       body: SafeArea(
         child: Column(

@@ -26,7 +26,7 @@ class _SettingsState extends State<Settings> {
         actions: [
           IconButton(
               onPressed: () {
-                Phoenix.rebirth(context);
+                Navigator.pop(context);
               },
               icon: const Icon(Icons.done_rounded))
         ],
@@ -40,7 +40,7 @@ class _SettingsState extends State<Settings> {
             collapsedIconColor: theme.secondary,
             backgroundColor: theme.primary,
             collapsedBackgroundColor: theme.primary,
-            title: const Row(children:  [
+            title: Row(children: const [
               Icon(Icons.palette_outlined),
               SizedBox(width: 8.0),
               Text('Theme')
@@ -96,6 +96,10 @@ class _SettingsState extends State<Settings> {
                     });
                   },
                 ),
+              ),
+              ListTile(
+                title: const Text('Theme will change after restarting the app.'),
+                textColor: theme.secondary
               ),
             ],
           ),
