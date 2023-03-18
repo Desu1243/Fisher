@@ -91,7 +91,7 @@ class _LearnPageState extends State<LearnPage> {
         ],
       ),
 
-      /// buttons :D
+      /// buttons
       bottomNavigationBar: Row(
         children: [
           if (!lp.doneLearning)
@@ -99,15 +99,22 @@ class _LearnPageState extends State<LearnPage> {
               /// don't know button :(
               child: ElevatedButton(
                   onPressed: () => {
-                        if (!lp.doneLearning)
-                          {
-                            if (lp.progress + 1 < shuffledCollection.length)
-                              {lp.progress++, lp.unknownTerms++}
-                            else
-                              {lp.unknownTerms++, lp.doneLearning = true},
-                          },
-                        shuffledCollection[lp.progress].toggle = true,
-                        setState(() {})
+                        setState(() {
+                          if (!lp.doneLearning) {
+                            if (lp.progress + 1 < shuffledCollection.length) {
+                              lp.unKnownTermsList
+                                  .add(shuffledCollection[lp.progress]);
+                              lp.progress++;
+                              lp.unknownTerms++;
+                            } else {
+                              lp.unKnownTermsList
+                                  .add(shuffledCollection[lp.progress]);
+                              lp.unknownTerms++;
+                              lp.doneLearning = true;
+                            }
+                          }
+                          shuffledCollection[lp.progress].toggle = true;
+                        })
                       },
                   style: ButtonStyle(
                     shape: const MaterialStatePropertyAll(
@@ -196,11 +203,14 @@ class LearnCard extends StatelessWidget {
 
       /// learning summary
       return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 20),
-            child: Text("Excellent job, just keep learning",
-                style: TextStyle(color: theme.secondary, fontSize: 24)),
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 20),
+              child: Text("Good job! Just keep learning!",
+                  style: TextStyle(color: theme.secondary, fontSize: 24)),
+            ),
           ),
           Row(
             children: [
@@ -258,18 +268,58 @@ class LearnCard extends StatelessWidget {
           ),
 
           /// go back button
-          ElevatedButton(
-            onPressed: () => {
-              Navigator.pop(context),
-            },
-            style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all(theme.primary),
+          Center(
+            child: ElevatedButton(
+              onPressed: () => {
+                Navigator.pop(context),
+              },
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(theme.primary),
+              ),
+              child: Text(
+                "Nice",
+                style: TextStyle(color: theme.secondary),
+              ),
             ),
-            child: Text(
-              "Nice",
-              style: TextStyle(color: theme.secondary),
+          ),
+
+          if(learningProgress.unKnownTermsList.isNotEmpty)
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Text("Unknown terms:", style: TextStyle(color: theme.secondary, fontSize: 18), textAlign: TextAlign.start,),
+          ),
+          /// ListView with unknown terms
+          Expanded(
+            child: ListView.builder(
+              itemCount: learningProgress.unKnownTermsList.length,
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              itemBuilder: (context, index) => Card(
+                color: theme.primary,
+                margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10)),
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 18, vertical: 15),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Text(learningProgress.unKnownTermsList[index].term,
+                          style: TextStyle(color: theme.secondary, fontSize: 18)),
+                      Divider(
+                        height: 15,
+                        color: theme.primary,
+                      ),
+                      Text(learningProgress.unKnownTermsList[index].definition,
+                          style: TextStyle(color: theme.secondary, fontSize: 18)),
+                    ],
+                  ),
+                ),
+              ),
             ),
-          )
+          ),
         ],
       );
     }

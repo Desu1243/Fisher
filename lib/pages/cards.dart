@@ -61,6 +61,7 @@ class _CardsPageState extends State<CardsPage> {
                         showData[index].toggle
                             ? showData[index].term
                             : showData[index].definition,
+                        textAlign: TextAlign.center,
                         style: TextStyle(
                             fontSize: 18,
                             color: theme.primary,
