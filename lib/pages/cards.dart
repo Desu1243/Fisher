@@ -2,6 +2,7 @@ import 'package:fisher/models/FlashCard.dart';
 import 'package:fisher/models/FlashCardCollection.dart';
 import 'package:fisher/pages/edit.dart';
 import 'package:fisher/pages/learn.dart';
+import 'package:fisher/pages/learnRandom.dart';
 import 'package:fisher/services/Collections.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
@@ -112,7 +113,7 @@ class _CardsPageState extends State<CardsPage> {
 
           /// learn using flash cards button
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+            padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
             child: Column(
               children: [
                 ElevatedButton(
@@ -137,6 +138,40 @@ class _CardsPageState extends State<CardsPage> {
                       ),
                       Text(
                         "Learn using flash cards",
+                        style: TextStyle(color: theme.secondary, fontSize: 18),
+                      )
+                    ]))
+              ],
+            ),
+          ),
+
+          ///randomized learning button
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+            child: Column(
+              children: [
+                ElevatedButton(
+                    onPressed: () => {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                LearnRandomPage(flashCardCollection: data),
+                          ))
+                    },
+                    style: ButtonStyle(
+                        shape: MaterialStatePropertyAll(RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10)))),
+                    child: Row(children: [
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(5, 15, 15, 15),
+                        child: Icon(
+                          Icons.autorenew_rounded,
+                          color: theme.surface,
+                        ),
+                      ),
+                      Text(
+                        "Learn terms and definitions",
                         style: TextStyle(color: theme.secondary, fontSize: 18),
                       )
                     ]))

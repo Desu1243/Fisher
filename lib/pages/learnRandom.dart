@@ -1,27 +1,30 @@
+import 'dart:math';
+
 import 'package:fisher/models/FlashCard.dart';
 import 'package:fisher/models/LearningProgress.dart';
 import 'package:flutter/material.dart';
 import '../models/FlashCardCollection.dart';
 import 'package:pie_chart/pie_chart.dart';
 
-class LearnPage extends StatefulWidget {
+class LearnRandomPage extends StatefulWidget {
   final FlashCardCollection flashCardCollection;
 
-  const LearnPage({super.key, required this.flashCardCollection});
+  const LearnRandomPage({super.key, required this.flashCardCollection});
 
   @override
-  State<LearnPage> createState() => _LearnPageState();
+  State<LearnRandomPage> createState() => _LearnRandomPageState();
 }
 
-class _LearnPageState extends State<LearnPage> {
+class _LearnRandomPageState extends State<LearnRandomPage> {
   LearningProgress lp = LearningProgress();
   List<FlashCard> shuffledCollection = List.empty();
+  Random rnd = Random();
 
   @override
   void initState() {
     shuffledCollection = [...widget.flashCardCollection.collection];
     shuffledCollection.shuffle();
-    shuffledCollection[0].toggle = true;
+    shuffledCollection[0].toggle = rnd.nextBool();
     super.initState();
   }
 
@@ -40,7 +43,7 @@ class _LearnPageState extends State<LearnPage> {
           lp.doneLearning = true;
         }
       }
-      shuffledCollection[lp.progress].toggle = true;
+      shuffledCollection[lp.progress].toggle = rnd.nextBool();
     });
   }
 
@@ -59,7 +62,7 @@ class _LearnPageState extends State<LearnPage> {
           lp.doneLearning = true;
         }
       }
-      shuffledCollection[lp.progress].toggle = true;
+      shuffledCollection[lp.progress].toggle = rnd.nextBool();
     });
   }
 
@@ -115,10 +118,10 @@ class _LearnPageState extends State<LearnPage> {
           Expanded(
               child: GestureDetector(
                   onTap: () => {
-                        shuffledCollection[lp.progress].toggle =
-                            !shuffledCollection[lp.progress].toggle,
-                        setState(() => {})
-                      },
+                    shuffledCollection[lp.progress].toggle =
+                    !shuffledCollection[lp.progress].toggle,
+                    setState(() => {})
+                  },
                   child: LearnCard(
                     card: shuffledCollection[lp.progress],
                     learningProgress: lp,
@@ -134,7 +137,7 @@ class _LearnPageState extends State<LearnPage> {
               /// don't know button :(
               child: ElevatedButton(
                   onPressed: () {
-                      dontKnowPressed();
+                    dontKnowPressed();
                   },
                   style: ButtonStyle(
                     shape: const MaterialStatePropertyAll(
@@ -154,7 +157,7 @@ class _LearnPageState extends State<LearnPage> {
               /// know button :)
               child: ElevatedButton(
                   onPressed: (){
-                        knowPressed();
+                    knowPressed();
                   },
                   style: ButtonStyle(
                     shape: const MaterialStatePropertyAll(
@@ -253,9 +256,9 @@ class LearnCard extends StatelessWidget {
                       ),
                       Center(
                           child: Text(
-                        "$knownPercent%",
-                        style: TextStyle(color: theme.secondary, fontSize: 24),
-                      ))
+                            "$knownPercent%",
+                            style: TextStyle(color: theme.secondary, fontSize: 24),
+                          ))
                     ],
                   ),
                 ),
@@ -286,20 +289,20 @@ class LearnCard extends StatelessWidget {
 
             /// unknown terms divider label
             if(learningProgress.unKnownTermsList.isNotEmpty)
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Divider(height: 1, color: theme.primary, thickness: 1),
-                  Padding(
-                    padding: const EdgeInsets.all(4.0),
-                    child: Text("Unknown terms:", style: TextStyle(color: theme.secondary, fontSize: 18, fontWeight: FontWeight.bold), textAlign: TextAlign.start,),
-                  ),
-                  Divider(height: 1, color: theme.primary, thickness: 1),
-                ],
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Divider(height: 1, color: theme.primary, thickness: 1),
+                    Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: Text("Unknown terms:", style: TextStyle(color: theme.secondary, fontSize: 18, fontWeight: FontWeight.bold), textAlign: TextAlign.start,),
+                    ),
+                    Divider(height: 1, color: theme.primary, thickness: 1),
+                  ],
+                ),
               ),
-            ),
 
             /// ListView with unknown terms
             Expanded(
@@ -314,7 +317,7 @@ class LearnCard extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10)),
                   child: Padding(
                     padding:
-                        const EdgeInsets.symmetric(horizontal: 18, vertical: 15),
+                    const EdgeInsets.symmetric(horizontal: 18, vertical: 15),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
