@@ -6,20 +6,28 @@ import 'package:fisher/widgets/FlashCardFormItemWidget.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 
 class CreatePage extends StatefulWidget {
-  const CreatePage({Key? key}) : super(key: key);
+  late FlashCardCollection data;
+  final bool editMode;
+
+  CreatePage({super.key, required this.data, required this.editMode});
 
   @override
   State<CreatePage> createState() => _CreatePageState();
 }
 
 class _CreatePageState extends State<CreatePage> {
+  late FlashCardCollection data;
   TextEditingController titleController = TextEditingController();
-  List<FlashCardFormItemWidget> flashCardForms = List.empty(growable: true);
   ScrollController formScrollController = ScrollController();
+  List<FlashCardFormItemWidget> flashCardForms = List.empty(growable: true);
 
   @override
   void initState() {
-    onAddFormField();
+    data = widget.data;
+    titleController.text = data.title;
+    for(int i=0; i< data.collection.length; i++){
+      flashCardForms.add(FlashCardFormItemWidget(flashCard: data.collection[i]));
+    }
     super.initState();
   }
 
@@ -34,7 +42,7 @@ class _CreatePageState extends State<CreatePage> {
       appBar: AppBar(
         foregroundColor: theme.secondary,
         title: const Text(
-          'Create flash card collection',
+          'Edit flash card collection',
           style: TextStyle(fontSize: 18),
         ),
         elevation: 0,
@@ -78,7 +86,7 @@ class _CreatePageState extends State<CreatePage> {
                 )),
             Padding(
               padding:
-                  const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
+              const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
               child: Text("TITLE", style: TextStyle(color: theme.secondary)),
             ),
             Expanded(
@@ -97,10 +105,16 @@ class _CreatePageState extends State<CreatePage> {
     );
   }
 
-  /// saves flash card collection in database
+  /// saves or updates flash card collection in database depending on the mode
   onSaveForm() async {
     List<FlashCard> _flashCards = List.empty(growable: true);
     Collections collectionsService = Collections();
+    if(widget.editMode) {
+      /// delete previous collection
+      await collectionsService.deleteCollection(data.id);
+    }
+
+    /// save new collection
     flashCardForms.forEach((fc) {
       _flashCards.add(FlashCard(
           term: fc.flashCard.term, definition: fc.flashCard.definition));

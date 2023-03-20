@@ -1,11 +1,9 @@
 import 'package:fisher/models/FlashCard.dart';
 import 'package:fisher/models/FlashCardCollection.dart';
-import 'package:fisher/pages/edit.dart';
+import 'package:fisher/pages/create.dart';
 import 'package:fisher/pages/learn.dart';
-import 'package:fisher/pages/learnRandom.dart';
-import 'package:fisher/services/Collections.dart';
+import 'package:fisher/widgets/DeleteCollection.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_phoenix/flutter_phoenix.dart';
 
 class CardsPage extends StatefulWidget {
   final FlashCardCollection collection;
@@ -31,9 +29,14 @@ class _CardsPageState extends State<CardsPage> {
         title: Text(data.title),
         actions: [
           DeleteCollection(collectionId: data.id),
-          IconButton(onPressed: (){
-            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => EditPage(data: data)));
-          }, icon: const Icon(Icons.edit))
+          IconButton(
+              onPressed: () {
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => CreatePage(data: data, editMode: true)));
+              },
+              icon: const Icon(Icons.edit))
         ],
       ),
       body: Column(
@@ -121,8 +124,9 @@ class _CardsPageState extends State<CardsPage> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) =>
-                                    LearnPage(flashCardCollection: data),
+                                builder: (context) => LearnPage(
+                                    flashCardCollection: data,
+                                    randomizedMode: false),
                               ))
                         },
                     style: ButtonStyle(
@@ -152,13 +156,14 @@ class _CardsPageState extends State<CardsPage> {
               children: [
                 ElevatedButton(
                     onPressed: () => {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                LearnRandomPage(flashCardCollection: data),
-                          ))
-                    },
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => LearnPage(
+                                    flashCardCollection: data,
+                                    randomizedMode: true),
+                              ))
+                        },
                     style: ButtonStyle(
                         shape: MaterialStatePropertyAll(RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10)))),
@@ -236,45 +241,5 @@ class _CardsPageState extends State<CardsPage> {
         ],
       ),
     );
-  }
-}
-
-///delete collection button in top right corner of the screen
-class DeleteCollection extends StatelessWidget {
-  final int collectionId;
-  const DeleteCollection({super.key, required this.collectionId});
-
-  @override
-  Widget build(BuildContext context) {
-    ColorScheme theme = Theme.of(context).colorScheme;
-    return IconButton(
-        onPressed: () => showDialog<String>(
-              context: context,
-              builder: (BuildContext context) => AlertDialog(
-                backgroundColor: theme.background,
-                title: Text('Delete collection?',
-                    style: TextStyle(color: theme.secondary)),
-                content: Text(
-                    'You are about to delete this flash card collection. Are you sure?',
-                    style: TextStyle(color: theme.secondary)),
-                actions: <Widget>[
-                  TextButton(
-                    onPressed: () async {
-                      /// remove collection from database
-                      Collections instance = Collections();
-                      await instance.deleteCollection(collectionId);
-                      Phoenix.rebirth(context);
-                    },
-                    child:
-                        Text('Yes', style: TextStyle(color: theme.onSurface)),
-                  ),
-                  TextButton(
-                    onPressed: () => Navigator.pop(context, 'Cancel'),
-                    child: Text('No', style: TextStyle(color: theme.onError)),
-                  ),
-                ],
-              ),
-            ),
-        icon: const Icon(Icons.delete_rounded));
   }
 }

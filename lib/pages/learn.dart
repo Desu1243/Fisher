@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:fisher/models/FlashCard.dart';
 import 'package:fisher/models/LearningProgress.dart';
 import 'package:flutter/material.dart';
@@ -6,8 +7,9 @@ import 'package:pie_chart/pie_chart.dart';
 
 class LearnPage extends StatefulWidget {
   final FlashCardCollection flashCardCollection;
+  final bool randomizedMode;
 
-  const LearnPage({super.key, required this.flashCardCollection});
+  const LearnPage({super.key, required this.flashCardCollection, required this.randomizedMode});
 
   @override
   State<LearnPage> createState() => _LearnPageState();
@@ -16,12 +18,17 @@ class LearnPage extends StatefulWidget {
 class _LearnPageState extends State<LearnPage> {
   LearningProgress lp = LearningProgress();
   List<FlashCard> shuffledCollection = List.empty();
+  Random rnd = Random();
 
   @override
   void initState() {
     shuffledCollection = [...widget.flashCardCollection.collection];
     shuffledCollection.shuffle();
-    shuffledCollection[0].toggle = true;
+    if(widget.randomizedMode) {
+      shuffledCollection[0].toggle = rnd.nextBool();
+    }else{
+      shuffledCollection[0].toggle = true;
+    }
     super.initState();
   }
 
@@ -40,7 +47,11 @@ class _LearnPageState extends State<LearnPage> {
           lp.doneLearning = true;
         }
       }
-      shuffledCollection[lp.progress].toggle = true;
+      if(widget.randomizedMode){
+        shuffledCollection[lp.progress].toggle = rnd.nextBool();
+      }else {
+        shuffledCollection[lp.progress].toggle = true;
+      }
     });
   }
 
@@ -59,7 +70,11 @@ class _LearnPageState extends State<LearnPage> {
           lp.doneLearning = true;
         }
       }
-      shuffledCollection[lp.progress].toggle = true;
+      if(widget.randomizedMode){
+        shuffledCollection[lp.progress].toggle = rnd.nextBool();
+      }else {
+        shuffledCollection[lp.progress].toggle = true;
+      }
     });
   }
 
