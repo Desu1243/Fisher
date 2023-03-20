@@ -25,6 +25,44 @@ class _LearnPageState extends State<LearnPage> {
     super.initState();
   }
 
+  void dontKnowPressed(){
+    setState(() {
+      if (!lp.doneLearning) {
+        if (lp.progress + 1 < shuffledCollection.length) {
+          /// add progress to unknown terms
+          lp.unKnownTermsList.add(shuffledCollection[lp.progress]);
+          lp.progress++;
+          lp.unknownTerms++;
+        } else {
+          /// add progress to unknown and end learning
+          lp.unKnownTermsList.add(shuffledCollection[lp.progress]);
+          lp.unknownTerms++;
+          lp.doneLearning = true;
+        }
+      }
+      shuffledCollection[lp.progress].toggle = true;
+    });
+  }
+
+  void knowPressed(){
+    setState((){
+      if (!lp.doneLearning)
+      {
+        if (lp.progress + 1 < shuffledCollection.length)
+        {
+          /// add progress to known terms
+          lp.progress++;
+          lp.knownTerms++;
+        } else {
+          /// add progress to known and end learning
+          lp.knownTerms++;
+          lp.doneLearning = true;
+        }
+      }
+      shuffledCollection[lp.progress].toggle = true;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     ColorScheme theme = Theme.of(context).colorScheme;
@@ -75,19 +113,16 @@ class _LearnPageState extends State<LearnPage> {
 
           /// flash card
           Expanded(
-              child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
-            child: GestureDetector(
-                onTap: () => {
-                      shuffledCollection[lp.progress].toggle =
-                          !shuffledCollection[lp.progress].toggle,
-                      setState(() => {})
-                    },
-                child: LearnCard(
-                  card: shuffledCollection[lp.progress],
-                  learningProgress: lp,
-                )),
-          ))
+              child: GestureDetector(
+                  onTap: () => {
+                        shuffledCollection[lp.progress].toggle =
+                            !shuffledCollection[lp.progress].toggle,
+                        setState(() => {})
+                      },
+                  child: LearnCard(
+                    card: shuffledCollection[lp.progress],
+                    learningProgress: lp,
+                  )))
         ],
       ),
 
@@ -98,24 +133,9 @@ class _LearnPageState extends State<LearnPage> {
             Expanded(
               /// don't know button :(
               child: ElevatedButton(
-                  onPressed: () => {
-                        setState(() {
-                          if (!lp.doneLearning) {
-                            if (lp.progress + 1 < shuffledCollection.length) {
-                              lp.unKnownTermsList
-                                  .add(shuffledCollection[lp.progress]);
-                              lp.progress++;
-                              lp.unknownTerms++;
-                            } else {
-                              lp.unKnownTermsList
-                                  .add(shuffledCollection[lp.progress]);
-                              lp.unknownTerms++;
-                              lp.doneLearning = true;
-                            }
-                          }
-                          shuffledCollection[lp.progress].toggle = true;
-                        })
-                      },
+                  onPressed: () {
+                      dontKnowPressed();
+                  },
                   style: ButtonStyle(
                     shape: const MaterialStatePropertyAll(
                         RoundedRectangleBorder(
@@ -133,17 +153,9 @@ class _LearnPageState extends State<LearnPage> {
             Expanded(
               /// know button :)
               child: ElevatedButton(
-                  onPressed: () => {
-                        if (!lp.doneLearning)
-                          {
-                            if (lp.progress + 1 < shuffledCollection.length)
-                              {lp.progress++, lp.knownTerms++}
-                            else
-                              {lp.knownTerms++, lp.doneLearning = true},
-                          },
-                        shuffledCollection[lp.progress].toggle = true,
-                        setState(() {})
-                      },
+                  onPressed: (){
+                        knowPressed();
+                  },
                   style: ButtonStyle(
                     shape: const MaterialStatePropertyAll(
                         RoundedRectangleBorder(
@@ -174,16 +186,19 @@ class LearnCard extends StatelessWidget {
     ColorScheme theme = Theme.of(context).colorScheme;
     if (!learningProgress.doneLearning) {
       /// flash card
-      return Card(
-        color: theme.primary,
-        shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(15))),
-        child: Padding(
-          padding: const EdgeInsets.all(10),
-          child: Center(
-            child: Text(card.toggle ? card.term : card.definition,
-                textAlign: TextAlign.center,
-                style: TextStyle(color: theme.secondary, fontSize: 20)),
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
+        child: Card(
+          color: theme.primary,
+          shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(15))),
+          child: Padding(
+            padding: const EdgeInsets.all(10),
+            child: Center(
+              child: Text(card.toggle ? card.term : card.definition,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: theme.secondary, fontSize: 20)),
+            ),
           ),
         ),
       );
@@ -202,125 +217,124 @@ class LearnCard extends StatelessWidget {
       }
 
       /// learning summary
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Center(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20),
-              child: Text("Good job! Just keep learning!",
-                  style: TextStyle(color: theme.secondary, fontSize: 24)),
-            ),
-          ),
-          Row(
-            children: [
-              /// circle chart with percent
-              SizedBox(
-                width: 137,
-                height: 137,
-                child: Stack(
-                  children: [
-                    PieChart(
-                      dataMap: dataMap,
-                      chartType: ChartType.ring,
-                      chartRadius: 120,
-                      legendOptions: const LegendOptions(
-                        showLegendsInRow: false,
-                        legendPosition: LegendPosition.right,
-                        showLegends: false,
-                      ),
-                      chartValuesOptions: const ChartValuesOptions(
-                        showChartValues: false,
-                      ),
-                      colorList: [theme.onError, theme.onSurface],
-                    ),
-                    Center(
-                        child: Text(
-                      "$knownPercent%",
-                      style: TextStyle(color: theme.secondary, fontSize: 24),
-                    ))
-                  ],
-                ),
-              ),
-
-              /// progress summary
-              Padding(
-                padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Known terms: ${learningProgress.knownTerms}",
-                      style: TextStyle(color: theme.onSurface, fontSize: 20),
-                    ),
-                    Text(
-                      "Unknown terms: ${learningProgress.unknownTerms}",
-                      style: TextStyle(
-                        color: theme.onError,
-                        fontSize: 20,
-                      ),
-                    )
-                  ],
-                ),
-              )
-            ],
-          ),
-
-          /// go back button
-          Center(
-            child: ElevatedButton(
-              onPressed: () => {
-                Navigator.pop(context),
-              },
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(theme.primary),
-              ),
-              child: Text(
-                "Nice",
-                style: TextStyle(color: theme.secondary),
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 20),
+                child: Text("Good job! Just keep learning!",
+                    style: TextStyle(color: theme.secondary, fontSize: 24)),
               ),
             ),
-          ),
-
-          if(learningProgress.unKnownTermsList.isNotEmpty)
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Text("Unknown terms:", style: TextStyle(color: theme.secondary, fontSize: 18), textAlign: TextAlign.start,),
-          ),
-          /// ListView with unknown terms
-          Expanded(
-            child: ListView.builder(
-              itemCount: learningProgress.unKnownTermsList.length,
-              scrollDirection: Axis.vertical,
-              shrinkWrap: true,
-              itemBuilder: (context, index) => Card(
-                color: theme.primary,
-                margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)),
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 18, vertical: 15),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            Row(
+              children: [
+                /// circle chart with percent
+                SizedBox(
+                  width: 137,
+                  height: 137,
+                  child: Stack(
                     children: [
-                      Text(learningProgress.unKnownTermsList[index].term,
-                          style: TextStyle(color: theme.secondary, fontSize: 18)),
-                      Divider(
-                        height: 15,
-                        color: theme.primary,
+                      PieChart(
+                        dataMap: dataMap,
+                        chartType: ChartType.ring,
+                        chartRadius: 120,
+                        legendOptions: const LegendOptions(
+                          showLegendsInRow: false,
+                          legendPosition: LegendPosition.right,
+                          showLegends: false,
+                        ),
+                        chartValuesOptions: const ChartValuesOptions(
+                          showChartValues: false,
+                        ),
+                        colorList: [theme.onError, theme.onSurface],
                       ),
-                      Text(learningProgress.unKnownTermsList[index].definition,
-                          style: TextStyle(color: theme.secondary, fontSize: 18)),
+                      Center(
+                          child: Text(
+                        "$knownPercent%",
+                        style: TextStyle(color: theme.secondary, fontSize: 24),
+                      ))
                     ],
+                  ),
+                ),
+
+                /// progress summary
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Known terms: ${learningProgress.knownTerms}",
+                        style: TextStyle(color: theme.onSurface, fontSize: 20),
+                      ),
+                      Text(
+                        "Unknown terms: ${learningProgress.unknownTerms}",
+                        style: TextStyle(
+                          color: theme.onError,
+                          fontSize: 20,
+                        ),
+                      )
+                    ],
+                  ),
+                )
+              ],
+            ),
+
+            /// unknown terms divider label
+            if(learningProgress.unKnownTermsList.isNotEmpty)
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Divider(height: 1, color: theme.primary, thickness: 1),
+                  Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: Text("Unknown terms:", style: TextStyle(color: theme.secondary, fontSize: 18), textAlign: TextAlign.start,),
+                  ),
+                  Divider(height: 1, color: theme.primary, thickness: 1),
+                ],
+              ),
+            ),
+
+            /// ListView with unknown terms
+            Expanded(
+              child: ListView.builder(
+                itemCount: learningProgress.unKnownTermsList.length,
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                itemBuilder: (context, index) => Card(
+                  color: theme.primary,
+                  margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10)),
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 18, vertical: 15),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Text(learningProgress.unKnownTermsList[index].term,
+                            style: TextStyle(color: theme.secondary, fontSize: 18)),
+                        Divider(
+                          height: 15,
+                          color: theme.primary,
+                        ),
+                        Text(learningProgress.unKnownTermsList[index].definition,
+                            style: TextStyle(color: theme.secondary, fontSize: 18)),
+                      ],
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       );
     }
   }
