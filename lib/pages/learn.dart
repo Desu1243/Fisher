@@ -1,6 +1,6 @@
 import 'dart:math';
 import 'package:fisher/models/FlashCard.dart';
-import 'package:fisher/models/LearningProgress.dart';
+import 'package:fisher/services/Learning.dart';
 import 'package:flutter/material.dart';
 import '../models/FlashCardCollection.dart';
 import 'package:pie_chart/pie_chart.dart';
@@ -16,12 +16,14 @@ class LearnPage extends StatefulWidget {
 }
 
 class _LearnPageState extends State<LearnPage> {
-  LearningProgress lp = LearningProgress();
+  Learning lp = Learning();
   List<FlashCard> shuffledCollection = List.empty();
   Random rnd = Random();
 
   @override
   void initState() {
+    Learning learning = Learning();
+
     shuffledCollection = [...widget.flashCardCollection.collection];
     shuffledCollection.shuffle();
     if(widget.randomizedMode) {
