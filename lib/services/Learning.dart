@@ -12,7 +12,15 @@ class Learning{
   List<FlashCard> shuffledCollection = List.empty(growable: true);
   bool randomMode = false;
 
-  Learning(){
+  Learning({required List<FlashCard> collection, required this.randomMode}){
+    collection.shuffle();
+    shuffledCollection = collection;
+
+    if(randomMode) {
+      shuffledCollection[0].toggle = rnd.nextBool();
+    }else{
+      shuffledCollection[0].toggle = true;
+    }
 
   }
 
