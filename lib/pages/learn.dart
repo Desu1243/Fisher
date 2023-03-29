@@ -98,7 +98,7 @@ class _LearnPageState extends State<LearnPage> {
                       },
                   child: LearningFlashCard(
                     card: learning.shuffledCollection[learning.progress],
-                    learningProgress: learning,
+                    learning: learning,
                   )))
         ],
       ),
