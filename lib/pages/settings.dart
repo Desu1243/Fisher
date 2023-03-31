@@ -1,6 +1,6 @@
 import 'package:fisher/services/Themes.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_phoenix/flutter_phoenix.dart';
+import 'package:restart_app/restart_app.dart';
 
 class Settings extends StatefulWidget {
   late int themeId;
@@ -14,7 +14,6 @@ class _SettingsState extends State<Settings> {
   @override
   Widget build(BuildContext context) {
     ColorScheme theme = Theme.of(context).colorScheme;
-    Themes themeService = Themes();
 
     return Scaffold(
       backgroundColor: theme.onPrimary,
@@ -26,7 +25,7 @@ class _SettingsState extends State<Settings> {
         actions: [
           IconButton(
               onPressed: () {
-                Navigator.pop(context);
+                Restart.restartApp();
               },
               icon: const Icon(Icons.done_rounded))
         ],
@@ -56,10 +55,7 @@ class _SettingsState extends State<Settings> {
                   value: 0,
                   groupValue: widget.themeId,
                   onChanged: (value) {
-                    setState(() {
-                      widget.themeId = value!;
-                      themeService.changeTheme(widget.themeId);
-                    });
+                    changeTheme(value);
                   },
                 ),
               ),
@@ -73,10 +69,7 @@ class _SettingsState extends State<Settings> {
                   value: 1,
                   groupValue: widget.themeId,
                   onChanged: (value) {
-                    setState(() {
-                      widget.themeId = value!;
-                      themeService.changeTheme(widget.themeId);
-                    });
+                    changeTheme(value);
                   },
                 ),
               ),
@@ -90,15 +83,12 @@ class _SettingsState extends State<Settings> {
                   value: 2,
                   groupValue: widget.themeId,
                   onChanged: (value) {
-                    setState(() {
-                      widget.themeId = value!;
-                      themeService.changeTheme(widget.themeId);
-                    });
+                    changeTheme(value);
                   },
                 ),
               ),
               ListTile(
-                title: const Text('Theme will change after restarting the app.'),
+                title: const Text('Changing theme will restart the app.'),
                 textColor: theme.secondary
               ),
             ],
@@ -106,5 +96,13 @@ class _SettingsState extends State<Settings> {
         ],
       ),
     );
+  }
+
+  changeTheme(value){
+    Themes themeService = Themes();
+    setState(() {
+      widget.themeId = value!;
+      themeService.changeTheme(widget.themeId);
+    });
   }
 }
