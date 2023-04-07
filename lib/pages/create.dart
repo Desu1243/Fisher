@@ -1,4 +1,5 @@
 import 'package:fisher/services/Collections.dart';
+import 'package:fisher/services/ImportExport.dart';
 import 'package:flutter/material.dart';
 import 'package:fisher/models/FlashCard.dart';
 import 'package:fisher/models/FlashCardCollection.dart';
@@ -6,7 +7,7 @@ import 'package:fisher/widgets/FlashCardFormItemWidget.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 
 class CreatePage extends StatefulWidget {
-  late FlashCardCollection data;
+  final FlashCardCollection data;
   final bool editMode;
 
   CreatePage({super.key, required this.data, required this.editMode});
@@ -20,6 +21,7 @@ class _CreatePageState extends State<CreatePage> {
   TextEditingController titleController = TextEditingController();
   ScrollController formScrollController = ScrollController();
   List<FlashCardFormItemWidget> flashCardForms = List.empty(growable: true);
+  ImportExport import = ImportExport();
 
   @override
   void initState() {
@@ -47,6 +49,15 @@ class _CreatePageState extends State<CreatePage> {
         ),
         elevation: 0,
         actions: [
+          /// import flash card collection
+          IconButton(
+              onPressed: () async {
+                ///get data from importIcon
+                await import.getData();
+                importCollection(import.data);
+              },
+              icon: const Icon(Icons.download_rounded)),
+        /// save flash card collection
           IconButton(
               onPressed: () {
                 onSaveForm();
@@ -145,5 +156,15 @@ class _CreatePageState extends State<CreatePage> {
           curve: Curves.easeOut,
           duration: const Duration(milliseconds: 300));
     }
+  }
+
+  importCollection(FlashCardCollection data){
+    setState(() {
+      titleController.text = data.title;
+      flashCardForms = List.empty(growable: true);
+      for(int i=0; i< data.collection.length; i++){
+        flashCardForms.add(FlashCardFormItemWidget(flashCard: data.collection[i]));
+      }
+    });
   }
 }

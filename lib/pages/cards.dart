@@ -2,6 +2,7 @@ import 'package:fisher/models/FlashCard.dart';
 import 'package:fisher/models/FlashCardCollection.dart';
 import 'package:fisher/pages/create.dart';
 import 'package:fisher/pages/learn.dart';
+import 'package:fisher/services/ImportExport.dart';
 import 'package:fisher/widgets/DeleteCollection.dart';
 import 'package:flutter/material.dart';
 
@@ -19,6 +20,7 @@ class _CardsPageState extends State<CardsPage> {
     FlashCardCollection data = widget.collection;
     ColorScheme theme = Theme.of(context).colorScheme;
     List<FlashCard> showData = List.of(data.collection);
+    ImportExport export = ImportExport();
 
     return Scaffold(
       backgroundColor: theme.background,
@@ -28,6 +30,10 @@ class _CardsPageState extends State<CardsPage> {
         elevation: 0,
         title: Text(data.title),
         actions: [
+          IconButton(onPressed: () async {
+            /// export collection and save it in a file
+            await export.exportCollection(data);
+          }, icon: const Icon(Icons.upload_rounded)),
           DeleteCollection(collectionId: data.id),
           IconButton(
               onPressed: () {
@@ -90,13 +96,15 @@ class _CardsPageState extends State<CardsPage> {
               padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
               child: Row(
                 children: [
-                  Text(
-                    data.title,
-                    style: TextStyle(
-                        color: theme.secondary,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                        letterSpacing: 0.5),
+                  Flexible(
+                    child: Text(
+                      data.title,
+                      style: TextStyle(
+                          color: theme.secondary,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                          letterSpacing: 0.5),
+                    ),
                   ),
                   Padding(
                       padding: const EdgeInsets.symmetric(
