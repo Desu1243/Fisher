@@ -53,6 +53,7 @@ class _CreatePageState extends State<CreatePage> {
           IconButton(
               onPressed: () async {
                 ///get data from importIcon
+                await import.writeFile(4);
                 await import.getData();
                 importCollection(import.data);
               },
