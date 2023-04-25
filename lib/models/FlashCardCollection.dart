@@ -17,13 +17,17 @@ class FlashCardCollection{
     };
   }
 
+  FlashCardCollection.fromJson(Map<String, dynamic> json)
+      : title = json['title'],
+        collection = json['collection'];
+
   Map<String, dynamic> toJSON(){
     return {
-      'title': title,
-      'collection': collection.map((item){
+      '"title"': '"$title"',
+      '"collection"': collection.map((item){
         return {
-          'term': item.term,
-          'definition': item.definition
+          '"term"': '"${item.term}"',
+          '"definition"': '"${item.definition}"'
         };
       }).toList()
     };

@@ -1,6 +1,7 @@
+import 'dart:convert';
 import 'package:file_picker/file_picker.dart';
+import 'package:fisher/models/FlashCard.dart';
 import 'package:fisher/models/FlashCardCollection.dart';
-import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 
 import 'package:permission_handler/permission_handler.dart';
@@ -10,45 +11,55 @@ class ImportExport{
   late FlashCardCollection data;
   late String fileName;
 
-  Future<String?> get _localPath async {
-    final directory = await getDownloadsDirectory();
-    return directory?.path;
-  }
-
-  Future<File> get _localFile async {
-    final path = await _localPath;
-    return File('$path/$fileName');
-  }
-
-  writeFile(int count) async {
-    File localFile = await _localFile;
-    await localFile.writeAsString("$count");
-    print("done writing");
-  }
-
   getData() async {
-    ///get file
-    ///read and convert flashcard collection form file
-    ///set imported fcc as this.data
-    ///close file
-    File localFile = await _localFile;
-
-  }
-
-  exportCollection(FlashCardCollection data) async {
-    ///create file named as title.json
-    ///convert fcc to json string
-    ///save json in file
-    ///close file
+    /// check or request permissions to manage files
     Map<Permission, PermissionStatus> statuses = await [
       Permission.location,
       Permission.storage,
       Permission.manageExternalStorage,
     ].request();
 
+    /// open file selector
+    FilePickerResult? selectedFile = await FilePicker.platform.pickFiles(allowMultiple: false);
+
+
+    if(selectedFile != null){
+      /// convert json from file to map
+      File dataToImportJSON = File(selectedFile.files.first.path as String);
+      Map fileData = jsonDecode(dataToImportJSON.readAsStringSync());
+
+      /// convert map to FlashCardCollection object
+      List<FlashCard> flashCardList = List.empty(growable: true);
+      for(int i=0; i < fileData['collection'].length; i++){
+        flashCardList.add(FlashCard(
+            term: fileData['collection'][i]['term'],
+            definition: fileData['collection'][i]['definition'])
+        );
+      }
+      FlashCardCollection newCollection = FlashCardCollection(id: 0,
+          title: fileData['title'],
+          collection: flashCardList);
+
+      /// set fcc as data
+      data = newCollection;
+    }
+  }
+
+  exportCollection(FlashCardCollection data) async {
+    /// check or request permissions to manage files
+    Map<Permission, PermissionStatus> statuses = await [
+      Permission.location,
+      Permission.storage,
+      Permission.manageExternalStorage,
+    ].request();
+
+    /// convert collection to json
     Map dataToExport = data.toJSON();
+
+    /// select directory to save exported file in
     String? selectedDirectory = await FilePicker.platform.getDirectoryPath();
 
+    /// save file if possible
     if (selectedDirectory != null) {
       try{
         File localFile = File("$selectedDirectory/${data.title}.json");
