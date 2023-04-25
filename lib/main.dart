@@ -6,7 +6,7 @@ import 'package:flutter_phoenix/flutter_phoenix.dart';
 
 Themes themeService = Themes();
 
-Future<void> getTheme() async{
+Future<void> InitApp() async{
   var themeIndex = 0;
 
   var db = await openDatabase('fisher.db');
@@ -31,5 +31,5 @@ Future<void> getTheme() async{
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  getTheme();
+  InitApp();
 }
