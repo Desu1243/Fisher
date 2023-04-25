@@ -22,7 +22,6 @@ class ImportExport{
     /// open file selector
     FilePickerResult? selectedFile = await FilePicker.platform.pickFiles(allowMultiple: false);
 
-
     if(selectedFile != null){
       /// convert json from file to map
       File dataToImportJSON = File(selectedFile.files.first.path as String);
@@ -40,7 +39,7 @@ class ImportExport{
           title: fileData['title'],
           collection: flashCardList);
 
-      /// set fcc as data
+      /// set flash card collection as data
       data = newCollection;
     }
   }
@@ -59,7 +58,7 @@ class ImportExport{
     /// select directory to save exported file in
     String? selectedDirectory = await FilePicker.platform.getDirectoryPath();
 
-    /// save file if possible
+    /// save data in file if possible
     if (selectedDirectory != null) {
       try{
         File localFile = File("$selectedDirectory/${data.title}.json");
