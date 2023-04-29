@@ -9,7 +9,7 @@ import 'package:permission_handler/permission_handler.dart';
 
 class ImportExport{
   late FlashCardCollection data;
-  late String fileName;
+  String exportMessage = "Collection successfully exported";
 
   getData() async {
     /// check or request permissions to manage files
@@ -64,7 +64,7 @@ class ImportExport{
         File localFile = File("$selectedDirectory/${data.title}.json");
         await localFile.writeAsString(dataToExport.toString());
       }catch(e){
-        print(e);
+        exportMessage = "Something went wrong";
       }
     }
   }
