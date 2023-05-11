@@ -29,14 +29,14 @@ class ImportExport{
 
       /// convert map to FlashCardCollection object
       List<FlashCard> flashCardList = List.empty(growable: true);
-      for(int i=0; i < fileData['collection'].length; i++){
+      for(int i=0; i < fileData['c'].length; i++){
         flashCardList.add(FlashCard(
-            term: fileData['collection'][i]['term'],
-            definition: fileData['collection'][i]['definition'])
+            term: fileData['c'][i]['t'],
+            definition: fileData['c'][i]['d'])
         );
       }
       FlashCardCollection newCollection = FlashCardCollection(id: 0,
-          title: fileData['title'],
+          title: fileData['t'],
           collection: flashCardList);
 
       /// set flash card collection as data
@@ -61,7 +61,7 @@ class ImportExport{
     /// save data in file if possible
     if (selectedDirectory != null) {
       try{
-        File localFile = File("$selectedDirectory/${data.title}.json");
+        File localFile = File("$selectedDirectory/${data.title}.txt");
         await localFile.writeAsString(dataToExport.toString());
       }catch(e){
         exportMessage = "Something went wrong";

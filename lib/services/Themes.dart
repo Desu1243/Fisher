@@ -1,8 +1,20 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
 class Themes{
   late int themeId;
+
+  Future<String> get _localPath async {
+    final directory = await getApplicationDocumentsDirectory();
+    return directory.path;
+  }
+
+  Future<File> get _localFile async {
+    final path = await _localPath;
+    return File('$path/fisherSettings.txt');
+  }
 
   Future<void> changeTheme(int number) async{
     var db = await openDatabase('fisher.db');

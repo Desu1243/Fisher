@@ -33,14 +33,16 @@ class _CardsPageState extends State<CardsPage> {
           IconButton(onPressed: () async {
             /// export collection and save it in a file
             await export.exportCollection(data);
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                  content: Text(
-                    export.exportMessage,
-                    style: TextStyle(color: theme.background),
-                  ),
-                  backgroundColor: theme.secondary),
-            );
+            if(context.mounted) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                    content: Text(
+                      export.exportMessage,
+                      style: TextStyle(color: theme.background),
+                    ),
+                    backgroundColor: theme.secondary),
+              );
+            }
           }, icon: const Icon(Icons.upload_rounded)),
           DeleteCollection(collectionId: data.id),
           IconButton(

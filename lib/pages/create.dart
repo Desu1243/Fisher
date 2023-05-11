@@ -43,9 +43,8 @@ class _CreatePageState extends State<CreatePage> {
       backgroundColor: theme.background,
       appBar: AppBar(
         foregroundColor: theme.secondary,
-        title: const Text(
-          'Edit flash card collection',
-          style: TextStyle(fontSize: 18),
+        title: Text( widget.editMode? 'Edit collection': 'Create collection',
+          style: const TextStyle(fontSize: 18),
         ),
         elevation: 0,
         actions: [
