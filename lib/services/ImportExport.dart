@@ -25,9 +25,10 @@ class ImportExport{
     if(selectedFile != null){
       /// convert json from file to map
       File dataToImportJSON = File(selectedFile.files.first.path as String);
-      Map fileData = jsonDecode(dataToImportJSON.readAsStringSync());
-
       /// convert map to FlashCardCollection object
+      Map<String, dynamic> fileData = jsonDecode(dataToImportJSON.readAsStringSync());
+      FlashCardCollection newCollection = FlashCardCollection.fromJson(fileData);
+/*
       List<FlashCard> flashCardList = List.empty(growable: true);
       for(int i=0; i < fileData['c'].length; i++){
         flashCardList.add(FlashCard(
@@ -38,6 +39,8 @@ class ImportExport{
       FlashCardCollection newCollection = FlashCardCollection(
           title: fileData['t'],
           collection: flashCardList);
+          */
+
 
       /// set flash card collection as data
       data = newCollection;
@@ -51,10 +54,12 @@ class ImportExport{
       Permission.storage,
       Permission.manageExternalStorage,
     ].request();
-
+/*
     /// convert collection to json
     Map dataToExport = data.toJSON();
 
+ */
+    var dataToExport = jsonEncode(data.toMap());
     /// select directory to save exported file in
     String? selectedDirectory = await FilePicker.platform.getDirectoryPath();
 
@@ -68,4 +73,22 @@ class ImportExport{
       }
     }
   }
+
+
+  getDataQR() async {
+    ///open scanner
+    ///get json data from qr code
+    ///try to decode it to collection
+    ///set decoded collection as 'data' variable
+
+  }
+
+  exportCollectionQR(FlashCardCollection data) async {
+    ///convert given data to json
+    ///check if it has less than 4296 characters in length
+    ///if so open new page with qr code only
+    var dataJson = jsonEncode(data.toMap());
+
+  }
+
 }

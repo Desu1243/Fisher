@@ -5,7 +5,7 @@ import 'package:flutter_phoenix/flutter_phoenix.dart';
 
 Themes themeService = Themes();
 
-Future<void> InitApp() async{
+Future<void> startApp() async{
   Themes themes = Themes();
   await themes.getTheme();
 
@@ -21,5 +21,5 @@ Future<void> InitApp() async{
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  InitApp();
+  startApp();
 }
