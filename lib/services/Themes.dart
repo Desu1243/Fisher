@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:sqflite/sqflite.dart';
 
 class Themes{
   late int themeId;
@@ -13,24 +12,30 @@ class Themes{
 
   Future<File> get _localFile async {
     final path = await _localPath;
-    return File('$path/fisherSettings.txt');
+    return File('$path/fisherTheme.txt');
   }
 
   Future<void> changeTheme(int number) async{
-    var db = await openDatabase('fisher.db');
-    int update = await db.rawUpdate(
-    'UPDATE theme SET theme_number = $number WHERE id=1');
+    try {
+      final fisherThemeFile = await _localFile;
+      fisherThemeFile.writeAsStringSync('$number');
+    }catch(e){
+      themeId = 0;
+    }
   }
 
   Future<void> getTheme() async{
-    var db = await openDatabase('fisher.db');
-    await db.execute("CREATE TABLE IF NOT EXISTS theme (id INT NOT NULL, theme_number INT NOT NULL, PRIMARY KEY (id))");
-    List<Map> dbThemes = await db.rawQuery('SELECT * FROM theme');
-    if (dbThemes.isEmpty) {
-      await db.rawQuery('INSERT INTO theme(id, theme_number) VALUES(1, 0)');
+    try {
+      final fisherThemeFile = await _localFile;
+      if(await fisherThemeFile.exists()){
+        var themeFileContent = await fisherThemeFile.readAsString();
+        themeId = int.parse(themeFileContent);
+      }else{
+        themeId = 0;
+        fisherThemeFile.writeAsStringSync('0');
+      }
+    }catch(e){
       themeId = 0;
-    } else {
-      themeId = dbThemes[0]['theme_number'];
     }
   }
 
