@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:fisher/models/FlashCard.dart';
 import 'package:fisher/models/FlashCardCollection.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:path_provider/path_provider.dart';
@@ -40,14 +39,8 @@ class Collections{
 
         ///convert data to list of flash card collections
         for (int i = 0; i < fisherData.length; i++) {
-          Map fccMap = fisherData[i];
-          List<FlashCard> fcList = List.empty(growable: true);
-          for (int j = 0; j < fccMap['c'].length; j++) {
-            fcList.add(FlashCard(
-                term: fccMap['c'][j]['t'], definition: fccMap['c'][j]['d']));
-          }
-          collections.add(FlashCardCollection(
-              title: fccMap['t'], collection: fcList));
+          FlashCardCollection fromFileCollection = FlashCardCollection.fromJson(fisherData[i]);
+          collections.add(fromFileCollection);
         }
         collectionList = collections;
       }else{
@@ -62,34 +55,32 @@ class Collections{
   /// Saves new collection in fisherData file
   Future<void> saveCollection(FlashCardCollection flashCardCollection) async {
     try{
-      List collections = List.empty(growable: true);
+      List<FlashCardCollection> collections = List.empty(growable: true);
       /// get fisher data file
       final fisherDataFile = await _localFile;
       if(await fisherDataFile.exists()){
         ///get data from file
         List fisherData = jsonDecode(fisherDataFile.readAsStringSync());
+
         ///convert data to list of flash card collections
         for(int i = 0; i < fisherData.length; i++){
-          Map fccMap = fisherData[i];
-          List<FlashCard> fcList = List.empty(growable: true);
-          for(int j = 0; j < fccMap['c'].length; j++){
-            fcList.add(FlashCard(term: fccMap['c'][j]['t'], definition: fccMap['c'][j]['d']));
-          }
-          collections.add(FlashCardCollection(title: fccMap['t'], collection: fcList));
+          FlashCardCollection fromFileCollection = FlashCardCollection.fromJson(fisherData[i]);
+          collections.add(fromFileCollection);
         }
+        /// add new collection to list of collections
         collections.add(flashCardCollection);
 
         List jsonCollections = List.empty(growable: true);
         ///convert to json
         for(int i = 0; i < collections.length; i++){
-          jsonCollections.add(collections[i].toJSON());
+          jsonCollections.add(jsonEncode(collections[i].toMap()));
         }
         ///save data in file
         await fisherDataFile.writeAsString(jsonCollections.toString());
       }else{
         /// if there is no file, just save data in file
-        collections.add(flashCardCollection.toJSON());
-        await fisherDataFile.writeAsString(collections.toString());
+        collections.add(flashCardCollection);
+        await fisherDataFile.writeAsString(jsonEncode(collections.toString()));
       }
 
     }catch(e){
@@ -109,16 +100,7 @@ class Collections{
         List fisherData = jsonDecode(fisherDataFile.readAsStringSync());
 
         ///convert data to list of flash card collections
-        for (int i = 0; i < fisherData.length; i++) {
-          Map fccMap = fisherData[i];
-          List<FlashCard> fcList = List.empty(growable: true);
-          for (int j = 0; j < fccMap['c'].length; j++) {
-            fcList.add(FlashCard(
-                term: fccMap['c'][j]['t'], definition: fccMap['c'][j]['d']));
-          }
-          collections.add(FlashCardCollection(
-              title: fccMap['t'], collection: fcList));
-        }
+        collections = List<FlashCardCollection>.from(fisherData.map((fc)=>FlashCardCollection.fromJson(fc)));
 
         var indexToDelete = collections.indexWhere((element) => element.title == selectedCollection.title);
         if(collections[indexToDelete].collection.length == selectedCollection.collection.length) {
@@ -128,7 +110,7 @@ class Collections{
         List jsonCollections = List.empty(growable: true);
         ///convert to json
         for(int i = 0; i < collections.length; i++){
-          jsonCollections.add(collections[i].toJSON());
+          jsonCollections.add(jsonEncode(collections[i].toMap()));
         }
         ///save data in file
         await fisherDataFile.writeAsString(jsonCollections.toString());
