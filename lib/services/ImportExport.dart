@@ -35,7 +35,7 @@ class ImportExport{
             definition: fileData['c'][i]['d'])
         );
       }
-      FlashCardCollection newCollection = FlashCardCollection(id: 0,
+      FlashCardCollection newCollection = FlashCardCollection(
           title: fileData['t'],
           collection: flashCardList);
 

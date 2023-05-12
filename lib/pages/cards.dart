@@ -44,7 +44,7 @@ class _CardsPageState extends State<CardsPage> {
               );
             }
           }, icon: const Icon(Icons.upload_rounded)),
-          DeleteCollection(collectionId: data.id),
+          DeleteCollection(selectedCollection: data),
           IconButton(
               onPressed: () {
                 Navigator.pushReplacement(

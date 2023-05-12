@@ -141,7 +141,7 @@ class _HomePageState extends State<HomePage> {
   /// opens create page
   openCreatePage() {
     FlashCardCollection emptyCollection = FlashCardCollection(
-        id: 0, title: "", collection: [FlashCard(definition: "", term: "")]);
+        title: "", collection: [FlashCard(definition: "", term: "")]);
     Navigator.push(
         context,
         MaterialPageRoute(

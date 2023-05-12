@@ -121,7 +121,7 @@ class _CreatePageState extends State<CreatePage> {
     Collections collectionsService = Collections();
     if(widget.editMode) {
       /// delete previous collection
-      await collectionsService.deleteCollection(data.id);
+      await collectionsService.deleteCollection(data);
     }
 
     /// save new collection
@@ -131,7 +131,7 @@ class _CreatePageState extends State<CreatePage> {
     });
     if (titleController.text.isNotEmpty) {
       FlashCardCollection flashCardCollection = FlashCardCollection(
-          title: titleController.text, collection: _flashCards, id: 0);
+          title: titleController.text, collection: _flashCards);
 
       flashCardCollection.collection
           .removeWhere((fc) => fc.definition == "" || fc.term == "");
