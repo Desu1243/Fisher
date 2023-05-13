@@ -48,6 +48,14 @@ class _CreatePageState extends State<CreatePage> {
         ),
         elevation: 0,
         actions: [
+          /// import collection using camera scanned QR code
+          IconButton(
+              onPressed: () async {
+                ///get data from importIcon
+                await import.getDataQR();
+                importCollection(import.data);
+              },
+              icon: const Icon(Icons.qr_code_scanner_outlined)),
           /// import flash card collection
           IconButton(
               onPressed: () async {

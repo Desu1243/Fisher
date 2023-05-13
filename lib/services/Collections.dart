@@ -7,6 +7,7 @@ import 'dart:io';
 class Collections{
   late List<FlashCardCollection> collectionList = List.empty(growable: true);
 
+
   Collections(){
     () async {
       Map<Permission, PermissionStatus> statuses = await [
@@ -35,7 +36,8 @@ class Collections{
       final fisherDataFile = await _localFile;
       if(await fisherDataFile.exists()) {
         ///get data from file
-        List fisherData = jsonDecode(fisherDataFile.readAsStringSync());
+        String fisherFileData = fisherDataFile.readAsStringSync();
+        var fisherData = jsonDecode(fisherFileData);
 
         ///convert data to list of flash card collections
         for (int i = 0; i < fisherData.length; i++) {
@@ -45,10 +47,11 @@ class Collections{
         collectionList = collections;
       }else{
         collectionList = List.empty(growable: true);
+        await fisherDataFile.writeAsString("[]");
       }
 
     }catch(e){
-      print(e);
+      collectionList = List.empty(growable: true);
     }
   }
 
@@ -78,13 +81,14 @@ class Collections{
         ///save data in file
         await fisherDataFile.writeAsString(jsonCollections.toString());
       }else{
-        /// if there is no file, just save data in file
-        collections.add(flashCardCollection);
-        await fisherDataFile.writeAsString(jsonEncode(collections.toString()));
+        /// if there is no file, just save one element list in file
+        List jsonCollections = List.empty(growable: true);
+        jsonCollections.add(jsonEncode(flashCardCollection.toMap()));
+        await fisherDataFile.writeAsString(jsonEncode(jsonCollections.toString()));
       }
 
     }catch(e){
-      print(e);
+      print("saveC $e");
     }
   }
 
@@ -116,7 +120,7 @@ class Collections{
         await fisherDataFile.writeAsString(jsonCollections.toString());
       }
     }catch(e){
-      print(e);
+      print("delC $e");
     }
   }
 }
