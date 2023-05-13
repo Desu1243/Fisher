@@ -9,15 +9,19 @@ class QRExportPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ColorScheme theme = Theme.of(context).colorScheme;
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: theme.background,
+        foregroundColor: theme.secondary,
+        elevation: 0,
         title: Text(collectionTitle),
         centerTitle: true,
       ),
       body: Center(
         child: QrImage(
           data: codeData,
-          embeddedImageStyle: QrEmbeddedImageStyle(),
+          errorCorrectionLevel: QrErrorCorrectLevel.L,
         ),
       ),
     );

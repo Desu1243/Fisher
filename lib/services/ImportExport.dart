@@ -1,15 +1,14 @@
+import 'dart:io';
 import 'dart:convert';
 import 'package:file_picker/file_picker.dart';
-import 'package:fisher/models/FlashCard.dart';
 import 'package:fisher/models/FlashCardCollection.dart';
-import 'dart:io';
-
 import 'package:permission_handler/permission_handler.dart';
 
 
 class ImportExport{
   late FlashCardCollection data;
   String exportMessage = "Collection successfully exported";
+  String? dataQR;
 
   getData() async {
     /// check or request permissions to manage files
@@ -28,19 +27,6 @@ class ImportExport{
       /// convert map to FlashCardCollection object
       Map<String, dynamic> fileData = jsonDecode(dataToImportJSON.readAsStringSync());
       FlashCardCollection newCollection = FlashCardCollection.fromJson(fileData);
-/*
-      List<FlashCard> flashCardList = List.empty(growable: true);
-      for(int i=0; i < fileData['c'].length; i++){
-        flashCardList.add(FlashCard(
-            term: fileData['c'][i]['t'],
-            definition: fileData['c'][i]['d'])
-        );
-      }
-      FlashCardCollection newCollection = FlashCardCollection(
-          title: fileData['t'],
-          collection: flashCardList);
-          */
-
 
       /// set flash card collection as data
       data = newCollection;
@@ -54,11 +40,7 @@ class ImportExport{
       Permission.storage,
       Permission.manageExternalStorage,
     ].request();
-/*
-    /// convert collection to json
-    Map dataToExport = data.toJSON();
 
- */
     var dataToExport = jsonEncode(data.toMap());
     /// select directory to save exported file in
     String? selectedDirectory = await FilePicker.platform.getDirectoryPath();
@@ -74,7 +56,6 @@ class ImportExport{
     }
   }
 
-
   getDataQR() async {
     ///open scanner
     ///get json data from qr code
@@ -84,11 +65,13 @@ class ImportExport{
   }
 
   exportCollectionQR(FlashCardCollection data) async {
+    dataQR = null;
     ///convert given data to json
-    ///check if it has less than 4296 characters in length
-    ///if so open new page with qr code only
-    var dataJson = jsonEncode(data.toMap());
-
+    String dataJson = jsonEncode(data.toMap());
+    ///check if it has less than 2954 characters in length
+    ///at max size QR code is big and hard to scan
+    if(dataJson.length < 2954){
+      dataQR = dataJson;
+    }
   }
-
 }
