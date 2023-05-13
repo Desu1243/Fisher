@@ -1,10 +1,11 @@
+import 'package:fisher/models/FlashCardCollection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import '../services/Collections.dart';
 
 class DeleteCollection extends StatelessWidget {
-  final int collectionId;
-  const DeleteCollection({super.key, required this.collectionId});
+  final FlashCardCollection selectedCollection;
+  const DeleteCollection({super.key, required this.selectedCollection});
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +25,7 @@ class DeleteCollection extends StatelessWidget {
                 onPressed: () async {
                   /// remove collection from database
                   Collections instance = Collections();
-                  await instance.deleteCollection(collectionId);
+                  await instance.deleteCollection(selectedCollection);
                   Phoenix.rebirth(context);
                 },
                 child:

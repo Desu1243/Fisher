@@ -43,12 +43,19 @@ class _CreatePageState extends State<CreatePage> {
       backgroundColor: theme.background,
       appBar: AppBar(
         foregroundColor: theme.secondary,
-        title: const Text(
-          'Edit flash card collection',
-          style: TextStyle(fontSize: 18),
+        title: Text( widget.editMode? 'Edit collection': 'Create collection',
+          style: const TextStyle(fontSize: 18),
         ),
         elevation: 0,
         actions: [
+          /// import collection using camera scanned QR code
+          IconButton(
+              onPressed: () async {
+                ///get data from importIcon
+                await import.getDataQR();
+                importCollection(import.data);
+              },
+              icon: const Icon(Icons.qr_code_scanner_outlined)),
           /// import flash card collection
           IconButton(
               onPressed: () async {
@@ -122,7 +129,7 @@ class _CreatePageState extends State<CreatePage> {
     Collections collectionsService = Collections();
     if(widget.editMode) {
       /// delete previous collection
-      await collectionsService.deleteCollection(data.id);
+      await collectionsService.deleteCollection(data);
     }
 
     /// save new collection
@@ -132,7 +139,7 @@ class _CreatePageState extends State<CreatePage> {
     });
     if (titleController.text.isNotEmpty) {
       FlashCardCollection flashCardCollection = FlashCardCollection(
-          title: titleController.text, collection: _flashCards, id: 0);
+          title: titleController.text, collection: _flashCards);
 
       flashCardCollection.collection
           .removeWhere((fc) => fc.definition == "" || fc.term == "");

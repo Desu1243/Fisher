@@ -16,4 +16,9 @@ class FlashCard{
       'definition': definition
     };
   }
+
+  FlashCard.fromJson(Map<String, dynamic> json)
+  : term = json['t'],
+    definition = json['d'];
+
 }

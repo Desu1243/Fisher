@@ -1,7 +1,10 @@
+import 'dart:math';
+
 import 'package:fisher/models/FlashCard.dart';
 import 'package:fisher/models/FlashCardCollection.dart';
 import 'package:fisher/pages/create.dart';
 import 'package:fisher/pages/learn.dart';
+import 'package:fisher/pages/qrexport.dart';
 import 'package:fisher/services/ImportExport.dart';
 import 'package:fisher/widgets/DeleteCollection.dart';
 import 'package:flutter/material.dart';
@@ -30,25 +33,55 @@ class _CardsPageState extends State<CardsPage> {
         elevation: 0,
         title: Text(data.title),
         actions: [
-          IconButton(onPressed: () async {
-            /// export collection and save it in a file
-            await export.exportCollection(data);
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                  content: Text(
-                    export.exportMessage,
-                    style: TextStyle(color: theme.background),
-                  ),
-                  backgroundColor: theme.secondary),
-            );
-          }, icon: const Icon(Icons.upload_rounded)),
-          DeleteCollection(collectionId: data.id),
+          IconButton(
+              onPressed: () async {
+                /// open a page with QR code with collection to share
+                await export.exportCollectionQR(data);
+                if (context.mounted) {
+                  if (export.dataQR != null) {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => QRExportPage(
+                                collectionTitle: data.title,
+                                codeData: export.dataQR!)));
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                          content: Text(
+                            "Collection is too long",
+                            style: TextStyle(color: theme.background),
+                          ),
+                          backgroundColor: theme.secondary),
+                    );
+                  }
+                }
+              },
+              icon: const Icon(Icons.qr_code_2_outlined)),
+          IconButton(
+              onPressed: () async {
+                /// export collection and save it in a file
+                await export.exportCollection(data);
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                        content: Text(
+                          export.exportMessage,
+                          style: TextStyle(color: theme.background),
+                        ),
+                        backgroundColor: theme.secondary),
+                  );
+                }
+              },
+              icon: const Icon(Icons.upload_rounded)),
+          DeleteCollection(selectedCollection: data),
           IconButton(
               onPressed: () {
                 Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => CreatePage(data: data, editMode: true)));
+                        builder: (context) =>
+                            CreatePage(data: data, editMode: true)));
               },
               icon: const Icon(Icons.edit))
         ],
