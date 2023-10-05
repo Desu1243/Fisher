@@ -5,6 +5,7 @@ import 'package:fisher/models/FlashCard.dart';
 import 'package:fisher/models/FlashCardCollection.dart';
 import 'package:fisher/widgets/FlashCardFormItemWidget.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
+import 'package:fisher/services/Languages.dart';
 
 class CreatePage extends StatefulWidget {
   final FlashCardCollection data;
@@ -22,6 +23,7 @@ class _CreatePageState extends State<CreatePage> {
   ScrollController formScrollController = ScrollController();
   List<FlashCardFormItemWidget> flashCardForms = List.empty(growable: true);
   ImportExport import = ImportExport();
+  Map<String, String> language = Lang.languages[Lang.langId];
 
   @override
   void initState() {
@@ -43,7 +45,7 @@ class _CreatePageState extends State<CreatePage> {
       backgroundColor: theme.background,
       appBar: AppBar(
         foregroundColor: theme.secondary,
-        title: Text( widget.editMode? 'Edit collection': 'Create collection',
+        title: Text( widget.editMode? language['create.edit']!: language['create.create']!,
           style: const TextStyle(fontSize: 18),
         ),
         elevation: 0,
@@ -105,7 +107,7 @@ class _CreatePageState extends State<CreatePage> {
             Padding(
               padding:
               const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
-              child: Text("TITLE", style: TextStyle(color: theme.secondary)),
+              child: Text(language['create.title']!, style: TextStyle(color: theme.secondary)),
             ),
             Expanded(
               child: ListView.builder(

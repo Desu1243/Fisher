@@ -1,9 +1,9 @@
 import 'package:fisher/models/FlashCard.dart';
 import 'package:fisher/pages/settings.dart';
+import 'package:fisher/services/Languages.dart';
 import 'package:flutter/material.dart';
-
-import '../models/FlashCardCollection.dart';
-import '../services/Themes.dart';
+import 'package:fisher/models/FlashCardCollection.dart';
+import 'package:fisher/services/Themes.dart';
 import 'cards.dart';
 import 'create.dart';
 
@@ -17,6 +17,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   ScrollController scrollController = ScrollController();
+  Map<String, String> language = Lang.languages[Lang.langId];
   @override
   Widget build(BuildContext context) {
     ColorScheme theme = Theme.of(context).colorScheme;
@@ -32,12 +33,15 @@ class _HomePageState extends State<HomePage> {
 
               /// show text if there are no collections created
               Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 16.0),
-                  child: Text(
-                      'Click on the plus sign at the bottom to create your first flash card collection.',
-                      style: TextStyle(color: theme.secondary, fontSize: 24),
-                      textAlign: TextAlign.center),
-                )
+                padding: const EdgeInsets.symmetric(vertical: 16.0),
+                child: SizedBox(
+                    width: double.infinity,
+                    child: Text(
+                        language['home.add']!,
+                        style: TextStyle(color: theme.secondary, fontSize: 16),
+                        textAlign: TextAlign.center),
+                  ),
+              )
               :
 
               /// else

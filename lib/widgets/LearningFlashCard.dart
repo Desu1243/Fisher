@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pie_chart/pie_chart.dart';
 
 import '../models/FlashCard.dart';
+import '../services/Languages.dart';
 import '../services/Learning.dart';
 
 class LearningFlashCard extends StatelessWidget {
@@ -13,6 +14,8 @@ class LearningFlashCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ColorScheme theme = Theme.of(context).colorScheme;
+    Map<String, String> language = Lang.languages[Lang.langId];
+
     if (!learning.doneLearning) {
       /// flash card
       return Padding(
@@ -54,7 +57,7 @@ class LearningFlashCard extends StatelessWidget {
             Center(
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 20),
-                child: Text("Good job! Just keep learning!",
+                child: Text(language['learning.goodJob']!,
                     style: TextStyle(color: theme.secondary, fontSize: 24)),
               ),
             ),
@@ -97,11 +100,11 @@ class LearningFlashCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Known terms: ${learning.knownTerms}",
+                        "${language['learning.known']!}: ${learning.knownTerms}",
                         style: TextStyle(color: theme.onSurface, fontSize: 20),
                       ),
                       Text(
-                        "Unknown terms: ${learning.unknownTerms}",
+                        "${language['learning.unknown']!}: ${learning.unknownTerms}",
                         style: TextStyle(
                           color: theme.onError,
                           fontSize: 20,
@@ -123,7 +126,7 @@ class LearningFlashCard extends StatelessWidget {
                     Divider(height: 1, color: theme.primary, thickness: 1),
                     Padding(
                       padding: const EdgeInsets.all(4.0),
-                      child: Text("Unknown terms:", style: TextStyle(color: theme.secondary, fontSize: 18, fontWeight: FontWeight.bold), textAlign: TextAlign.start,),
+                      child: Text("${language['learning.unknown']!}:", style: TextStyle(color: theme.secondary, fontSize: 18, fontWeight: FontWeight.bold), textAlign: TextAlign.start,),
                     ),
                     Divider(height: 1, color: theme.primary, thickness: 1),
                   ],

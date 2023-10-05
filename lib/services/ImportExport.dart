@@ -7,7 +7,7 @@ import 'package:permission_handler/permission_handler.dart';
 
 class ImportExport {
   late FlashCardCollection data;
-  String exportMessage = "Collection successfully exported";
+  bool exportMessage = true;
   String? dataQR;
 
   getData() async {
@@ -56,7 +56,7 @@ class ImportExport {
         File localFile = File("$selectedDirectory/${data.title}.txt");
         await localFile.writeAsString(dataToExport.toString());
       } catch (e) {
-        exportMessage = "Something went wrong";
+        exportMessage = false;
       }
     }
   }

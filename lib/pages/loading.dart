@@ -3,6 +3,8 @@ import 'package:fisher/services/Collections.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
+import '../services/Languages.dart';
+
 class LoadingPage extends StatefulWidget {
   const LoadingPage({Key? key}) : super(key: key);
 
@@ -15,7 +17,9 @@ class _LoadingPageState extends State<LoadingPage> {
   ///get data from database
   void setupFlashCardsCollections() async {
     Collections collections = Collections();
+    Lang langService = Lang();
     await collections.getData();
+    await langService.getLang();
     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage(flashCardCollection: collections.collectionList)));
   }
 

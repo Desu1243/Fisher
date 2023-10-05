@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fisher/models/FlashCard.dart';
+import 'package:fisher/services/Languages.dart';
 
 class FlashCardFormItemWidget extends StatefulWidget {
   FlashCard flashCard;
@@ -18,6 +19,7 @@ class FlashCardFormItemWidget extends StatefulWidget {
 
 class _FlashCardFormItemWidgetState extends State<FlashCardFormItemWidget> {
   final formKey = GlobalKey<FormState>();
+  Map<String, String> language = Lang.languages[Lang.langId];
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +52,7 @@ class _FlashCardFormItemWidgetState extends State<FlashCardFormItemWidget> {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 4.0),
-                child: Text("TERM", style: TextStyle(color: theme.secondary)),
+                child: Text(language['flashCardForm.term']!, style: TextStyle(color: theme.secondary)),
               ),
 
               TextFormField(
@@ -70,7 +72,7 @@ class _FlashCardFormItemWidgetState extends State<FlashCardFormItemWidget> {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 4.0),
-                child: Text("DEFINITION", style: TextStyle(color: theme.secondary)),
+                child: Text(language['flashCardForm.definition']!, style: TextStyle(color: theme.secondary)),
               ),
             ],
           ),

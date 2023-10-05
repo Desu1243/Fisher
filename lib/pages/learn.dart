@@ -2,8 +2,8 @@ import 'dart:math';
 import 'package:fisher/models/FlashCard.dart';
 import 'package:fisher/services/Learning.dart';
 import 'package:flutter/material.dart';
-import '../models/FlashCardCollection.dart';
-import '../widgets/LearningFlashCard.dart';
+import 'package:fisher/models/FlashCardCollection.dart';
+import 'package:fisher/widgets/LearningFlashCard.dart';
 
 class LearnPage extends StatefulWidget {
   final FlashCardCollection flashCardCollection;

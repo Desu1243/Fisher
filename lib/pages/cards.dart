@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:fisher/models/FlashCard.dart';
 import 'package:fisher/models/FlashCardCollection.dart';
 import 'package:fisher/pages/create.dart';
@@ -8,6 +6,7 @@ import 'package:fisher/pages/qrexport.dart';
 import 'package:fisher/services/ImportExport.dart';
 import 'package:fisher/widgets/DeleteCollection.dart';
 import 'package:flutter/material.dart';
+import 'package:fisher/services/Languages.dart';
 
 class CardsPage extends StatefulWidget {
   final FlashCardCollection collection;
@@ -24,6 +23,7 @@ class _CardsPageState extends State<CardsPage> {
     ColorScheme theme = Theme.of(context).colorScheme;
     List<FlashCard> showData = List.of(data.collection);
     ImportExport export = ImportExport();
+    Map<String, String> language = Lang.languages[Lang.langId];
 
     return Scaffold(
       backgroundColor: theme.background,
@@ -49,7 +49,7 @@ class _CardsPageState extends State<CardsPage> {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                           content: Text(
-                            "Collection is too long",
+                            language['cards.qrToolong']!,
                             style: TextStyle(color: theme.background),
                           ),
                           backgroundColor: theme.secondary),
@@ -66,7 +66,7 @@ class _CardsPageState extends State<CardsPage> {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                         content: Text(
-                          export.exportMessage,
+                          (export.exportMessage ? language['cards.qrExportSuccess']! : language['cards.qrExportFail']!),
                           style: TextStyle(color: theme.background),
                         ),
                         backgroundColor: theme.secondary),
@@ -156,7 +156,7 @@ class _CardsPageState extends State<CardsPage> {
                         width: 1,
                       )),
                   Text(
-                      "${data.collection.length} ${data.collection.length > 1 ? "terms" : "term"}",
+                      "${data.collection.length} ${data.collection.length > 1 ? language['cards.terms']! : language['cards.term']!}",
                       style: TextStyle(color: theme.secondary, fontSize: 15)),
                 ],
               ),
@@ -190,7 +190,7 @@ class _CardsPageState extends State<CardsPage> {
                         ),
                       ),
                       Text(
-                        "Learn using flash cards",
+                        language['cards.learnFlashCards']!,
                         style: TextStyle(color: theme.secondary, fontSize: 18),
                       )
                     ]))
@@ -225,7 +225,7 @@ class _CardsPageState extends State<CardsPage> {
                         ),
                       ),
                       Text(
-                        "Learn terms and definitions",
+                        language['cards.learnTermsDef']!,
                         style: TextStyle(color: theme.secondary, fontSize: 18),
                       )
                     ]))
@@ -241,7 +241,7 @@ class _CardsPageState extends State<CardsPage> {
               child: Row(
                 children: [
                   Text(
-                    "Flash cards",
+                    language['cards.flashCards']!,
                     style: TextStyle(
                         color: theme.secondary,
                         fontWeight: FontWeight.bold,
