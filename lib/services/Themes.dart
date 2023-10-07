@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 
 class Themes{
-  late int themeId;
+  static late int themeId;
 
   Future<String> get _localPath async {
     final directory = await getApplicationDocumentsDirectory();
@@ -39,10 +39,9 @@ class Themes{
     }
   }
 
-  List<ThemeData> themes = [
+  static List<ColorScheme> themes = [
     /// forest green - default
-    ThemeData(
-      colorScheme: const ColorScheme(
+    const ColorScheme(
         brightness: Brightness.light,
         primary: Color.fromRGBO(27, 86, 83, 1.0), //1A5653 //forest green
         secondary: Color.fromRGBO(208, 249, 207, 1.0), //D0F9CF //light lime green
@@ -56,12 +55,10 @@ class Themes{
         onSurface: Color.fromRGBO(101, 239, 99, 1.0), //E06363 //red
         onError: Color.fromRGBO(249, 99, 99, 1.0), //65E063 //green
       ),
-      brightness: Brightness.light,
-    ),
+
 
     /// purple haze
-    ThemeData(
-      colorScheme: const ColorScheme(
+    const ColorScheme(
         brightness: Brightness.light,
         primary: Color.fromRGBO(74, 26, 86, 1.0),
         secondary: Color.fromRGBO(238, 207, 249, 1.0),
@@ -75,12 +72,10 @@ class Themes{
         onSurface: Color.fromRGBO(101, 239, 99, 1.0), //E06363 //red
         onError: Color.fromRGBO(249, 99, 99, 1.0), //65E063 //green
       ),
-      brightness: Brightness.light,
-    ),
+
 
     /// Blue sky
-    ThemeData(
-      colorScheme: const ColorScheme(
+    const ColorScheme(
         brightness: Brightness.light,
         primary: Color.fromRGBO(26, 36, 86, 1.0),
         secondary: Color.fromRGBO(207, 219, 249, 1.0),
@@ -94,7 +89,5 @@ class Themes{
         onSurface: Color.fromRGBO(101, 239, 99, 1.0), //E06363 //red
         onError: Color.fromRGBO(249, 99, 99, 1.0), //65E063 //green
       ),
-      brightness: Brightness.light,
-    ),
   ];
 }

@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fisher/models/FlashCard.dart';
 import 'package:fisher/services/Languages.dart';
+import '../services/Themes.dart';
+
 
 class FlashCardFormItemWidget extends StatefulWidget {
   FlashCard flashCard;
@@ -23,14 +25,14 @@ class _FlashCardFormItemWidgetState extends State<FlashCardFormItemWidget> {
 
   @override
   Widget build(BuildContext context) {
-    ColorScheme theme = Theme.of(context).colorScheme;
+    ColorScheme theme = Themes.themes[Themes.themeId];
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
       child: Form(
         key: formKey,
         child: Container(
-          padding: EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(8.0),
           color: theme.primary,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

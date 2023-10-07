@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:fisher/models/FlashCardCollection.dart';
 import 'package:fisher/widgets/LearningFlashCard.dart';
 
+import '../services/Themes.dart';
+
 class LearnPage extends StatefulWidget {
   final FlashCardCollection flashCardCollection;
   final bool randomizedMode;
@@ -42,7 +44,7 @@ class _LearnPageState extends State<LearnPage> {
 
   @override
   Widget build(BuildContext context) {
-    ColorScheme theme = Theme.of(context).colorScheme;
+    ColorScheme theme = Themes.themes[Themes.themeId];
     List<FlashCard> collection = widget.flashCardCollection.collection;
 
     return Scaffold(

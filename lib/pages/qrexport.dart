@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import '../services/Themes.dart';
 
 class QRExportPage extends StatelessWidget {
   final String collectionTitle;
@@ -9,7 +10,7 @@ class QRExportPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ColorScheme theme = Theme.of(context).colorScheme;
+    ColorScheme theme = Themes.themes[Themes.themeId];
     return Scaffold(
       appBar: AppBar(
         backgroundColor: theme.background,

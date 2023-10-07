@@ -1,8 +1,9 @@
 import 'package:fisher/models/FlashCardCollection.dart';
+import 'package:fisher/pages/loading.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_phoenix/flutter_phoenix.dart';
 import '../services/Collections.dart';
 import '../services/Languages.dart';
+import '../services/Themes.dart';
 
 class DeleteCollection extends StatelessWidget {
   final FlashCardCollection selectedCollection;
@@ -10,7 +11,7 @@ class DeleteCollection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ColorScheme theme = Theme.of(context).colorScheme;
+    ColorScheme theme = Themes.themes[Themes.themeId];
     Map<String, String> language = Lang.languages[Lang.langId];
 
     return IconButton(
@@ -33,7 +34,10 @@ class DeleteCollection extends StatelessWidget {
                   /// remove collection from database
                   Collections instance = Collections();
                   await instance.deleteCollection(selectedCollection);
-                  Phoenix.rebirth(context);
+                  //Phoenix.rebirth(context);
+                  if(context.mounted){
+                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const LoadingPage()));
+                  }
                 },
                 child:
                 Text(language['delete.yes']!, style: TextStyle(color: theme.onSurface)),

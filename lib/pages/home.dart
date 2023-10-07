@@ -20,7 +20,7 @@ class _HomePageState extends State<HomePage> {
   Map<String, String> language = Lang.languages[Lang.langId];
   @override
   Widget build(BuildContext context) {
-    ColorScheme theme = Theme.of(context).colorScheme;
+    ColorScheme theme = Themes.themes[Themes.themeId];
     var collections = widget.flashCardCollection;
 
     return Scaffold(
@@ -126,7 +126,9 @@ class _HomePageState extends State<HomePage> {
                 onPressed: () async {
                   Themes themeService = Themes();
                   await themeService.getTheme();
-                  openSettingsPage(themeService.themeId);
+                  if(context.mounted){
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => Settings()));
+                  }
                 }),
           ],
         ),
@@ -151,11 +153,5 @@ class _HomePageState extends State<HomePage> {
         MaterialPageRoute(
             builder: (context) =>
                 CreatePage(editMode: false, data: emptyCollection)));
-  }
-
-  ///opens settings page
-  openSettingsPage(int tId) {
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => Settings(themeId: tId)));
   }
 }

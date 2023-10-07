@@ -4,6 +4,7 @@ import 'package:pie_chart/pie_chart.dart';
 import '../models/FlashCard.dart';
 import '../services/Languages.dart';
 import '../services/Learning.dart';
+import '../services/Themes.dart';
 
 class LearningFlashCard extends StatelessWidget {
   final FlashCard card;
@@ -13,7 +14,7 @@ class LearningFlashCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ColorScheme theme = Theme.of(context).colorScheme;
+    ColorScheme theme = Themes.themes[Themes.themeId];
     Map<String, String> language = Lang.languages[Lang.langId];
 
     if (!learning.doneLearning) {

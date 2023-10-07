@@ -7,6 +7,7 @@ import 'package:fisher/services/ImportExport.dart';
 import 'package:fisher/widgets/DeleteCollection.dart';
 import 'package:flutter/material.dart';
 import 'package:fisher/services/Languages.dart';
+import '../services/Themes.dart';
 
 class CardsPage extends StatefulWidget {
   final FlashCardCollection collection;
@@ -20,7 +21,7 @@ class _CardsPageState extends State<CardsPage> {
   @override
   Widget build(BuildContext context) {
     FlashCardCollection data = widget.collection;
-    ColorScheme theme = Theme.of(context).colorScheme;
+    ColorScheme theme = Themes.themes[Themes.themeId];
     List<FlashCard> showData = List.of(data.collection);
     ImportExport export = ImportExport();
     Map<String, String> language = Lang.languages[Lang.langId];
@@ -179,6 +180,7 @@ class _CardsPageState extends State<CardsPage> {
                               ))
                         },
                     style: ButtonStyle(
+                      backgroundColor: MaterialStatePropertyAll(theme.primary),
                         shape: MaterialStatePropertyAll(RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10)))),
                     child: Row(children: [
@@ -214,6 +216,7 @@ class _CardsPageState extends State<CardsPage> {
                               ))
                         },
                     style: ButtonStyle(
+                        backgroundColor: MaterialStatePropertyAll(theme.primary),
                         shape: MaterialStatePropertyAll(RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10)))),
                     child: Row(children: [

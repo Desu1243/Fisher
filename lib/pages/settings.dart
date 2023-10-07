@@ -1,12 +1,12 @@
+import 'package:fisher/pages/loading.dart';
 import 'package:fisher/services/Languages.dart';
 import 'package:fisher/services/Themes.dart';
 import 'package:flutter/material.dart';
-import 'package:restart_app/restart_app.dart';
 
 class Settings extends StatefulWidget {
-  late int themeId;
   late int langId = Lang.langId;
-  Settings({super.key, required this.themeId});
+  late int themeId = Themes.themeId;
+  Settings({super.key});
 
   @override
   State<Settings> createState() => _SettingsState();
@@ -15,7 +15,7 @@ class Settings extends StatefulWidget {
 class _SettingsState extends State<Settings> {
   @override
   Widget build(BuildContext context) {
-    ColorScheme theme = Theme.of(context).colorScheme;
+    ColorScheme theme = Themes.themes[Themes.themeId];
     Map<String, String> language = Lang.languages[Lang.langId];
 
     return Scaffold(
@@ -28,7 +28,9 @@ class _SettingsState extends State<Settings> {
         actions: [
           IconButton(
               onPressed: () {
-                Restart.restartApp();
+                if(context.mounted){
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const LoadingPage()));
+                }
               },
               icon: const Icon(Icons.done_rounded))
         ],
@@ -90,10 +92,6 @@ class _SettingsState extends State<Settings> {
                   },
                 ),
               ),
-              ListTile(
-                title: Text(language['settings.change']!),
-                textColor: theme.secondary
-              ),
             ],
           ),
           ExpansionTile(
@@ -104,8 +102,8 @@ class _SettingsState extends State<Settings> {
             backgroundColor: theme.primary,
             collapsedBackgroundColor: theme.primary,
             title: Row(children: [
-              Icon(Icons.language_outlined),
-              SizedBox(width: 8.0),
+              const Icon(Icons.language_outlined),
+              const SizedBox(width: 8.0),
               Text(language['settings.language']!)
             ]),
             children: [

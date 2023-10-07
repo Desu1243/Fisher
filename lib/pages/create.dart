@@ -1,11 +1,13 @@
+import 'package:fisher/pages/loading.dart';
 import 'package:fisher/services/Collections.dart';
 import 'package:fisher/services/ImportExport.dart';
 import 'package:flutter/material.dart';
 import 'package:fisher/models/FlashCard.dart';
 import 'package:fisher/models/FlashCardCollection.dart';
 import 'package:fisher/widgets/FlashCardFormItemWidget.dart';
-import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:fisher/services/Languages.dart';
+import '../services/Themes.dart';
+
 
 class CreatePage extends StatefulWidget {
   final FlashCardCollection data;
@@ -37,13 +39,14 @@ class _CreatePageState extends State<CreatePage> {
 
   @override
   Widget build(BuildContext context) {
-    ColorScheme theme = Theme.of(context).colorScheme;
+    ColorScheme theme = Themes.themes[Themes.themeId];
     bool visibleKeyboard = MediaQuery.of(context).viewInsets.bottom != 0;
 
     return Scaffold(
       resizeToAvoidBottomInset: true,
       backgroundColor: theme.background,
       appBar: AppBar(
+        backgroundColor: theme.primary,
         foregroundColor: theme.secondary,
         title: Text( widget.editMode? language['create.edit']!: language['create.create']!,
           style: const TextStyle(fontSize: 18),
@@ -150,7 +153,9 @@ class _CreatePageState extends State<CreatePage> {
       }
     }
     await Future.delayed(const Duration(milliseconds: 50),(){});
-    Phoenix.rebirth(context);
+    if(context.mounted){
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const LoadingPage()));
+    }
   }
 
   /// adds new form field to the form

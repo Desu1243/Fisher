@@ -11,11 +11,10 @@ class ImportExport {
   String? dataQR;
 
   getData() async {
-    /// check or request permissions to manage files
+    /// check for request permissions to manage files
     Map<Permission, PermissionStatus> statuses = await [
-      Permission.location,
       Permission.storage,
-      Permission.manageExternalStorage,
+      //Permission.manageExternalStorage,
     ].request();
 
     /// open file selector
@@ -38,11 +37,10 @@ class ImportExport {
   }
 
   exportCollection(FlashCardCollection data) async {
-    /// check or request permissions to manage files
+    /// check for request permissions to manage files
     Map<Permission, PermissionStatus> statuses = await [
-      Permission.location,
       Permission.storage,
-      Permission.manageExternalStorage,
+      //Permission.manageExternalStorage,
     ].request();
 
     var dataToExport = jsonEncode(data.toMap());

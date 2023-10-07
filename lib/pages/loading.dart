@@ -1,5 +1,6 @@
 import 'package:fisher/pages/home.dart';
 import 'package:fisher/services/Collections.dart';
+import 'package:fisher/services/Themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
@@ -18,9 +19,13 @@ class _LoadingPageState extends State<LoadingPage> {
   void setupFlashCardsCollections() async {
     Collections collections = Collections();
     Lang langService = Lang();
+    Themes themeService = Themes();
     await collections.getData();
     await langService.getLang();
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage(flashCardCollection: collections.collectionList)));
+    await themeService.getTheme();
+    if(context.mounted){
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage(flashCardCollection: collections.collectionList)));
+    }
   }
 
   @override
@@ -30,11 +35,11 @@ class _LoadingPageState extends State<LoadingPage> {
   }
   @override
   Widget build(BuildContext context) {
-    ColorScheme theme = Theme.of(context).colorScheme;
-    return Scaffold(
-      backgroundColor: theme.onPrimary,
+    //ColorScheme theme = Theme.of(context).colorScheme;
+    return const Scaffold(
+      backgroundColor: Color.fromRGBO(60, 62, 60, 1),
       body: SpinKitRotatingPlain(
-        color: theme.secondary,
+        color: Color.fromRGBO(235, 240, 235, 1),
         size: 40,
       ),
     );
