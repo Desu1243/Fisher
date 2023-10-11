@@ -14,7 +14,6 @@ class ImportExport {
     /// check for request permissions to manage files
     Map<Permission, PermissionStatus> statuses = await [
       Permission.storage,
-      //Permission.manageExternalStorage,
     ].request();
 
     /// open file selector
@@ -38,23 +37,20 @@ class ImportExport {
 
   exportCollection(FlashCardCollection data) async {
     /// check for request permissions to manage files
-    Map<Permission, PermissionStatus> statuses = await [
-      Permission.storage,
-      //Permission.manageExternalStorage,
-    ].request();
+    await Permission.storage.request();
 
     var dataToExport = jsonEncode(data.toMap());
 
     /// select directory to save exported file in
     String? selectedDirectory = await FilePicker.platform.getDirectoryPath();
-
     /// save data in file if possible
     if (selectedDirectory != null) {
       try {
-        File localFile = File("$selectedDirectory/${data.title}.txt");
+        File localFile = File("$selectedDirectory/${data.title}.json");
         await localFile.writeAsString(dataToExport.toString());
       } catch (e) {
         exportMessage = false;
+        await Permission.manageExternalStorage.request();
       }
     }
   }

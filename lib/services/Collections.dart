@@ -10,10 +10,7 @@ class Collections{
 
   Collections(){
     () async {
-      Map<Permission, PermissionStatus> statuses = await [
-        Permission.location,
-        Permission.storage,
-      ].request();
+      await Permission.storage.request();
     }();
   }
 
