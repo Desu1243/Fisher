@@ -164,12 +164,16 @@ class _CreatePageState extends State<CreatePage> {
       FlashCard flashCard = FlashCard(term: "", definition: "");
       flashCardForms.add(FlashCardFormItemWidget(flashCard: flashCard));
     });
-    if(flashCardForms.length > 1) {
-      formScrollController.animateTo(
-          formScrollController.position.maxScrollExtent,
-          curve: Curves.easeOut,
-          duration: const Duration(milliseconds: 300));
-    }
+    ()async{
+      await Future.delayed(const Duration(milliseconds: 30));
+      if(flashCardForms.length > 1) {
+        formScrollController.animateTo(
+            formScrollController.position.maxScrollExtent,
+            curve: Curves.easeOut,
+            duration: const Duration(milliseconds: 300));
+      }
+    }();
+
   }
 
   importCollection(FlashCardCollection data){
