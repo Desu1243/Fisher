@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:pie_chart/pie_chart.dart';
 
@@ -27,11 +28,34 @@ class LearningFlashCard extends StatelessWidget {
               borderRadius: BorderRadius.all(Radius.circular(15))),
           child: Padding(
             padding: const EdgeInsets.all(10),
-            child: Center(
-              child: Text(card.toggle ? card.term : card.definition,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: theme.secondary, fontSize: 20)),
-            ),
+            child: card.image != ""
+                ? Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                        if (File(card.image).existsSync())
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Center(
+                              child: Image.file(
+                                File(card.image),
+                                height: 250,
+                              ),
+                            ),
+                          ),
+                      Expanded(
+                        child: Text(card.toggle ? card.term : card.definition,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: theme.secondary, fontSize: 20)),
+                      ),
+                    ],
+                  )
+                : Center(
+                    child: Text(card.toggle ? card.term : card.definition,
+                        textAlign: TextAlign.center,
+                        style:
+                            TextStyle(color: theme.secondary, fontSize: 20)),
+                  ),
           ),
         ),
       );
@@ -86,9 +110,9 @@ class LearningFlashCard extends StatelessWidget {
                       ),
                       Center(
                           child: Text(
-                            "$knownPercent%",
-                            style: TextStyle(color: theme.secondary, fontSize: 24),
-                          ))
+                        "$knownPercent%",
+                        style: TextStyle(color: theme.secondary, fontSize: 24),
+                      ))
                     ],
                   ),
                 ),
@@ -118,7 +142,7 @@ class LearningFlashCard extends StatelessWidget {
             ),
 
             /// unknown terms divider label
-            if(learning.unKnownTermsList.isNotEmpty)
+            if (learning.unKnownTermsList.isNotEmpty)
               Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: Column(
@@ -127,7 +151,14 @@ class LearningFlashCard extends StatelessWidget {
                     Divider(height: 1, color: theme.primary, thickness: 1),
                     Padding(
                       padding: const EdgeInsets.all(4.0),
-                      child: Text("${language['learning.unknown']!}:", style: TextStyle(color: theme.secondary, fontSize: 18, fontWeight: FontWeight.bold), textAlign: TextAlign.start,),
+                      child: Text(
+                        "${language['learning.unknown']!}:",
+                        style: TextStyle(
+                            color: theme.secondary,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold),
+                        textAlign: TextAlign.start,
+                      ),
                     ),
                     Divider(height: 1, color: theme.primary, thickness: 1),
                   ],
@@ -142,24 +173,27 @@ class LearningFlashCard extends StatelessWidget {
                 shrinkWrap: true,
                 itemBuilder: (context, index) => Card(
                   color: theme.primary,
-                  margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                  margin:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10)),
                   child: Padding(
-                    padding:
-                    const EdgeInsets.symmetric(horizontal: 18, vertical: 15),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 18, vertical: 15),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Text(learning.unKnownTermsList[index].term,
-                            style: TextStyle(color: theme.secondary, fontSize: 18)),
+                            style: TextStyle(
+                                color: theme.secondary, fontSize: 18)),
                         Divider(
                           height: 15,
                           color: theme.primary,
                         ),
                         Text(learning.unKnownTermsList[index].definition,
-                            style: TextStyle(color: theme.secondary, fontSize: 18)),
+                            style: TextStyle(
+                                color: theme.secondary, fontSize: 18)),
                       ],
                     ),
                   ),

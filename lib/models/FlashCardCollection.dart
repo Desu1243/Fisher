@@ -15,7 +15,8 @@ class FlashCardCollection{
       'c': collection.map((item){
         return {
           't': item.term,
-          'd': item.definition
+          'd': item.definition,
+          'i': item.image
         };
       }).toList()
     };

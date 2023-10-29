@@ -140,7 +140,7 @@ class _CreatePageState extends State<CreatePage> {
     /// save new collection
     flashCardForms.forEach((fc) {
       _flashCards.add(FlashCard(
-          term: fc.flashCard.term, definition: fc.flashCard.definition));
+          term: fc.flashCard.term, definition: fc.flashCard.definition, image: fc.flashCard.image));
     });
     if (titleController.text.isNotEmpty) {
       FlashCardCollection flashCardCollection = FlashCardCollection(
@@ -161,7 +161,7 @@ class _CreatePageState extends State<CreatePage> {
   /// adds new form field to the form
   onAddFormField() {
     setState(() {
-      FlashCard flashCard = FlashCard(term: "", definition: "");
+      FlashCard flashCard = FlashCard(term: "", definition: "", image: "");
       flashCardForms.add(FlashCardFormItemWidget(flashCard: flashCard));
     });
     ()async{

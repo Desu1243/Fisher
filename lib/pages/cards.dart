@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:fisher/models/FlashCard.dart';
 import 'package:fisher/models/FlashCardCollection.dart';
 import 'package:fisher/pages/create.dart';
@@ -67,7 +68,9 @@ class _CardsPageState extends State<CardsPage> {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                         content: Text(
-                          (export.exportMessage ? language['cards.qrExportSuccess']! : language['cards.qrExportFail']!),
+                          (export.exportMessage
+                              ? language['cards.qrExportSuccess']!
+                              : language['cards.qrExportFail']!),
                           style: TextStyle(color: theme.background),
                         ),
                         backgroundColor: theme.secondary),
@@ -109,15 +112,42 @@ class _CardsPageState extends State<CardsPage> {
                       height: 150,
                       width: 300,
                       child: Center(
-                          child: Text(
-                        showData[index].toggle
-                            ? showData[index].term
-                            : showData[index].definition,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontSize: 18,
-                            color: theme.primary,
-                            fontWeight: FontWeight.bold),
+                          child: Stack(
+                        children: [
+
+                          if (showData[index].toggle)
+                            if (showData[index].image != "")
+                              if (File(showData[index].image).existsSync())
+                                Center(
+                                  child: Image.file(
+                                    File(showData[index].image),
+                                    height: 130,
+                                  ),
+                                ),
+                          Container(
+                            alignment: Alignment.center,
+                            child: Stack(
+                              children: [Text(
+                                showData[index].toggle ? showData[index].term : showData[index].definition,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  foreground: Paint()..style = PaintingStyle.stroke..strokeWidth = 3..color = theme.secondary,
+                                ),
+                              ),
+                                Text(
+                                  showData[index].toggle ? showData[index].term : showData[index].definition,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    color: theme.primary,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),]
+                            ),
+                          ),
+                        ],
                       )),
                     ),
                   ),
@@ -180,7 +210,8 @@ class _CardsPageState extends State<CardsPage> {
                               ))
                         },
                     style: ButtonStyle(
-                      backgroundColor: MaterialStatePropertyAll(theme.primary),
+                        backgroundColor:
+                            MaterialStatePropertyAll(theme.primary),
                         shape: MaterialStatePropertyAll(RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10)))),
                     child: Row(children: [
@@ -216,7 +247,8 @@ class _CardsPageState extends State<CardsPage> {
                               ))
                         },
                     style: ButtonStyle(
-                        backgroundColor: MaterialStatePropertyAll(theme.primary),
+                        backgroundColor:
+                            MaterialStatePropertyAll(theme.primary),
                         shape: MaterialStatePropertyAll(RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10)))),
                     child: Row(children: [
